@@ -1,4 +1,5 @@
 package primitives;
+import java.lang.Math;
 
 public class Vector extends Point {
 	
@@ -14,9 +15,21 @@ public class Vector extends Point {
 				throw new IllegalArgumentException("Vector cannot be the zero vector");
 	}
 	
-	public boolean equals (Object o) {return false;}
-	public double lengthSquared() {return 2;}
-	public double length() {return 2;}
+	public boolean equals (Object o) {
+		
+		if(o instanceof Vector other)
+			return((this.xyz).equals(other.xyz));
+		else
+			return false;
+	}
+	
+	public double lengthSquared() {
+		return ((this.xyz.d1)*(this.xyz.d1) + (this.xyz.d2)*(this.xyz.d2) + (this.xyz.d3)*(this.xyz.d3));
+	}
+	
+	public double length() {
+		return Math.sqrt(this.lengthSquared());
+	}
 	
 	public Vector add(Vector other) {
 		//are we supposed to use points add method?
@@ -36,35 +49,25 @@ public class Vector extends Point {
 		Double3 ans = this.xyz.scale(d);
         return new Vector(ans); 
 		}
-	public Vector dotProduct(Vector other) {
-		double x = other.xyz.d1 * this.xyz.d1;
-		double y = other.xyz.d2 * this.xyz.d2;
-		double z = other.xyz.d3 * this.xyz.d3;
-		return new Vector(x, y, z);
+	public double dotProduct(Vector other) {
+		return (other.xyz.d1 * this.xyz.d1) + (other.xyz.d2 * this.xyz.d2) + (other.xyz.d3 * this.xyz.d3);
 	}
 	public Vector crossProduct(Vector v) {
-		double a1 = this.xyz.d1;
-        double a2 = this.xyz.d2;
-        double a3 = this.xyz.d3;
-
-        double b1 = v.xyz.d1;
-        double b2 = v.xyz.d2;
-        double b3 = v.xyz.d3;
-
-        double c1 = a2 * b3 - a3 * b2;
-        double c2 = a3 * b1 - a1 * b3;
-        double c3 = a1 * b2 - a2 * b1;
+		
+        double c1 = (this.xyz.d2) * (v.xyz.d3) - (this.xyz.d3) * (v.xyz.d2);
+        double c2 = (this.xyz.d3) * (v.xyz.d1) - (this.xyz.d1) * (v.xyz.d3);
+        double c3 = (this.xyz.d1) * (v.xyz.d2) - (this.xyz.d2) * (v.xyz.d1);
 
         return new Vector(c1, c2, c3);
 	}
 	public Vector normalize() 
 	{
-		double length = distance(new Point(this.xyz));
+		double l = this.length();
 		Vector normalizedVector = 
 				new Vector(
-				this.xyz.d1/length, 
-				this.xyz.d2/length, 
-				this.xyz.d3/length
+				this.xyz.d1/l, 
+				this.xyz.d2/l, 
+				this.xyz.d3/l
 				);
 		return normalizedVector;
 	}
