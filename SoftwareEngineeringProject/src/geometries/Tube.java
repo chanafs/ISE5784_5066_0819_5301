@@ -7,6 +7,8 @@ import primitives.Vector;
 public class Tube extends RadialGeometry{
 
 	protected Ray axis; 
+	/*
+	 * constructor*/
 	public Tube(double radius, Ray axis) {
 		super(radius);
 		this.axis = axis;

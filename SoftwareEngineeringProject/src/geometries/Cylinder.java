@@ -1,6 +1,7 @@
 package geometries;
-import primitives.*; //extra? 
-
+import primitives.*; 
+/*
+ * Cylinder inherits from Tube*/
 public class Cylinder extends Tube{
 	
 	private double height; 
@@ -9,8 +10,9 @@ public class Cylinder extends Tube{
 		return null; 
 	}
 	
-	Ray axis; //public? 
-
+	Ray axis; 
+	/*
+	 * constructor*/
 	public Cylinder(double radius, Ray axis, double height, Ray axis2) {
 		super(radius, axis);
 		this.height = height;
