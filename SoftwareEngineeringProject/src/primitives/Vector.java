@@ -77,5 +77,10 @@ public class Vector extends Point {
 				);
 		return normalizedVector;
 	}
-
+	/*
+	 * returns the difference of the two Points*/
+	public Vector subtract(Point other) {
+		 Double3 diff =  this.xyz.subtract(other.xyz);
+		 return new Vector(diff);
+	}
 }
