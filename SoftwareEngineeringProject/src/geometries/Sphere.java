@@ -8,12 +8,20 @@ public class Sphere extends RadialGeometry{
 	 /*
 	  * constructor*/
 	public Sphere(double r, Point c) {
-		super(r);
-		this.center = c;
+		super(r); //sets radius by sending it to constructor of RadialGeometry
+		this.setCenter(c);
 	}
 
 	public Vector getNormal(Point p) {
-		return null; 
+		return (p.subtract(center)).normalize();
+	}
+
+	public Point getCenter() {
+		return center;
+	}
+
+	public void setCenter(Point center) {
+		this.center = center;
 	}
 	
 }

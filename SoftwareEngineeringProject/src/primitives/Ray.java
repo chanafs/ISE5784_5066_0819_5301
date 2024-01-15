@@ -5,6 +5,19 @@ public class Ray {
 	private Vector direction;
 	
 	public boolean equals(Object obj) {return false;}
+	
+	public final Point getHead() {
+		return head;
+	}
+	public void setHead(Point head) {
+		this.head = head;
+	}
+	public final Vector getDirection() {
+		return direction;
+	}
+	public void setDirection(Vector direction) {
+		this.direction = direction;
+	}
 	/*
 	 * constructor*/
 	public Ray(Point h, Vector d) {

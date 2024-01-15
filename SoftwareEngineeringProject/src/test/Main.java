@@ -4,8 +4,6 @@
  * Eliana Weinstein 34718223
  * */
 
-int hello; 
-
 package test;
 
 import static java.lang.System.out;
@@ -13,6 +11,8 @@ import static java.lang.System.out;
 import static primitives.Util.isZero;
 
 import primitives.*;
+
+
 
 /**
  * Test program for the 1st stage

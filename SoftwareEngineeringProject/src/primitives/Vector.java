@@ -83,4 +83,6 @@ public class Vector extends Point {
 		 Double3 diff =  this.xyz.subtract(other.xyz);
 		 return new Vector(diff);
 	}
+
+
 }

@@ -61,6 +61,9 @@ public class Point {
 		return (x+y+z);
 	}
 	
+	public Double3 getxyz() {
+		return xyz; 
+	}
 
 
 }
