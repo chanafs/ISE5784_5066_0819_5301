@@ -51,9 +51,10 @@ public class Vector extends Point {
 		}
 	/*
 	 * returns the dotProduct of two Vectors */
-	public double dotProduct(Vector other) {
-		return (other.xyz.d1 * this.xyz.d1) + (other.xyz.d2 * this.xyz.d2) + (other.xyz.d3 * this.xyz.d3);
+	public double dotProduct(Vector u) {
+		return (u.xyz.d1 * this.xyz.d1) + (u.xyz.d2 * this.xyz.d2) + (u.xyz.d3 * this.xyz.d3);
 	}
+	
 	/*
 	 * returns the crossProduct of two Vectors */
 	public Vector crossProduct(Vector v) {

@@ -12,13 +12,10 @@ import static primitives.Util.isZero;
 
 import primitives.*;
 
-
-
 /**
  * Test program for the 1st stage
  * @author Dan Zilberstein
  */
-//testing push to git on 21/1 at 13:13 
 
 public final class Main {
 

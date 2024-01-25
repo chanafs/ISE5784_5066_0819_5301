@@ -3,8 +3,9 @@ package geometries;
 import java.util.List;
 
 import static primitives.Util.isZero;
-
+import static primitives.Util.alignZero; 
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
 
 /**
@@ -78,7 +79,48 @@ public class Polygon implements Geometry { //extends was written???????
             throw new IllegalArgumentException("All vertices must be ordered and the polygon must be convex");
       }
    }
+   @Override
+   public List<Point> findIntersections(Ray ray) {
+       List<Point> result = plane.findIntersections(ray);
 
+       if (result == null) {
+           return result;
+       }
+
+       Point P0 = ray.getHead();
+       Vector v = ray.getDirection();
+
+       Point P1 = vertices.get(1);
+       Point P2 = vertices.get(0);
+
+       Vector v1 = P1.subtract(P0);
+       Vector v2 = P2.subtract(P0);
+
+       double sign = alignZero(v.dotProduct(v1.crossProduct(v2)));
+
+       if (isZero(sign)) {
+           return null;
+       }
+
+       boolean positive = sign > 0;
+
+       //iterate through all vertices of the polygon
+       for (int i = vertices.size() - 1; i > 0; --i) {
+           v1 = v2;
+           v2 = vertices.get(i).subtract(P0);
+
+           sign = alignZero(v.dotProduct(v1.crossProduct(v2)));
+           if (isZero(sign)) {
+               return null;
+           }
+
+           if (positive != (sign > 0)) {
+               return null;
+           }
+       }
+
+       return result;
+   }
    @Override
    public Vector getNormal(Point point) { return plane.getNormal(); }
 

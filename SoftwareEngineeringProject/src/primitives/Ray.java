@@ -31,5 +31,9 @@ public class Ray {
 	public String toString() {
 		return "Ray []";
 	}
+	public Point getPoint(double t) {
 
+	        return this.head.add(direction.scale(t)); 
+
+	    }
 }
