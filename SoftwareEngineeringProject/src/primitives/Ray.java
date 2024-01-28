@@ -31,6 +31,9 @@ public class Ray {
 	public String toString() {
 		return "Ray []";
 	}
+	/*
+	 * getPoint calculates point on the ray: 𝑷 = 𝑷𝟎 + 𝒕∙𝒗
+	 * */
 	public Point getPoint(double t) {
 
 	        return this.head.add(direction.scale(t)); 

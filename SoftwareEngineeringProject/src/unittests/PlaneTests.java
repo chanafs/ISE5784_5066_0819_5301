@@ -3,6 +3,9 @@
  */
 package unittests;
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.List;
+
 import primitives.*; 
 
 import org.junit.jupiter.api.Test;
@@ -14,7 +17,7 @@ import geometries.Plane;
  */
 class PlaneTests {
 	   private final double DELTA = 0.000001;
-	   
+	   Plane pl = new Plane(new Point(0, 0, 1), new Vector(1, 1, 1));
 	   @Test
 	    public void testConstructor(){
 	        // ============ Equivalence Partitions Tests ==============
@@ -28,8 +31,7 @@ class PlaneTests {
 	        // =============== Boundary Values Tests ==================
 
 	        // TC11: The first and second points are the same
-	        assertThrows(IllegalArgumentException.class, 
-	                () -> new Plane(new Point(0, 0, 1),new Point(0, 0, 1),new Point(0, 1, 0)),"Constructed a Plane with the same first and second points ");
+	        assertThrows(IllegalArgumentException.class,() -> new Plane(new Point(0, 0, 1),new Point(0, 0, 1),new Point(0, 1, 0)),"Constructed a Plane with the same first and second points ");
 	        // TC12: The points are on the same line
 	        assertThrows(IllegalArgumentException.class, //
 	                () -> new Plane(new Point(5, 2, 4),new Point(1, 1, 1),new Point(9, 3, 7)),  "Constructed a plane with the points are on the same line");
@@ -38,28 +40,29 @@ class PlaneTests {
 	/**
 	 * Test method for {@link geometries.Plane#getNormal()}.
 	 */
-	   @Test
+	 @Test
 		void testGetNormal() {
 		    Point p1 =new Point(0, 0, 1);
 		    Point p2= new Point(1, 0, 0);
 		    Point p3 = new Point(0, 1, 0);
 			Plane p = new Plane(p1, p2, p3);
 			
-			  //test that getNormal doesn't throw error
+			//test that getNormal doesn't throw error
 		     assertDoesNotThrow(() -> p.getNormal(new Point(0, 0, 1)), "");
-		      // generate the test result
+		     // generate the test result
 		      Vector result = p.getNormal(new Point(0, 0, 1));
-		      // ensure length of result = 1
-		      assertEquals(1, result.length(), DELTA, "Plane's normal is not a unit vector");
+		      // ensure |result| = 1
+		      assertEquals(1.0, result.length(), DELTA, "Plane's normal is not a unit vector");
 		      // ensure the result is orthogonal to all the edges
 		      assertEquals(0d, result.dotProduct(p2.subtract(p1)), DELTA,
 		                      "Plane's normal is not orthogonal to one of the edges");
 		      assertEquals(0d, result.dotProduct(p3.subtract(p1)), DELTA,
 	                  "Plane's normal is not orthogonal to one of the edges");
 		}
-	    @Test
+	   @Test
 	    void testFindIntersections() {
-	        // ============ Equivalence Partitions Tests ==============
+
+			// ============ Equivalence Partitions Tests ==============
 	        // TC01: Ray into plane
 	        assertEquals(List.of(new Point(1, 0, 0)),
 	                pl.findIntersections(new Ray(new Point(0.5, 0, 0), new Vector(1, 0, 0))),
@@ -110,7 +113,6 @@ class PlaneTests {
 	        assertNull(pl.findIntersections(new Ray(new Point(0, 0, 1),
 	                        new Vector(1, 1, 0))),
 	                "Must not be plane intersection");
-
 	    }
-	   }
+	}
 	

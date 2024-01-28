@@ -2,11 +2,8 @@
  * 
  */
 package unittests;
-
 import primitives.*;
-
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -60,7 +57,7 @@ class SphereTests {
 	        // TC02: Ray starts before and crosses the sphere (2 points)
 	        List<Point> result = sphere.findIntersections(new Ray(new Point(-1, 0, 0), new Vector(3, 1, 0)));
 	        assertEquals(2, result.size(), "Wrong number of points");
-	        if (result.get(0).getxyz().getx() > result.get(1).getxyz().getx())
+	        if (result.get(0).getxyz().getD1() > result.get(1).getxyz().getD1())
 	            result = List.of(result.get(1), result.get(0));
 	        assertEquals(exp, result, "Ray crosses sphere");
 	        // TC03: Ray starts inside the sphere (1 point)
@@ -91,7 +88,7 @@ class SphereTests {
 	        // TC13: Ray starts before the sphere (2 points)
 	        result = sphere.findIntersections(new Ray(new Point(1, -2, 0), new Vector(0, 1, 0)));
 	        assertEquals(2, result.size(), "Wrong number of points");
-	        if (result.get(0).getxyz().getY() > result.get(1).getxyz().getY())
+	        if (result.get(0).getxyz().getD2() > result.get(1).getxyz().getD2())
 	            result = List.of(result.get(1), result.get(0));
 	        assertEquals(List.of(new Point(1, -1, 0), new Point(1, 1, 0)),
 	                result,
@@ -127,8 +124,7 @@ class SphereTests {
 	                "Tangent line, ray after sphere");
 
 	        // **** Group: Special cases
-	        // TC19: Ray's line is outside, ray is orthogonal to ray start to sphere's
-	        // center line
+	        // TC22: Ray's line is outside, ray is orthogonal to ray start to sphere's center line
 	        assertNull(sphere.findIntersections(new Ray(new Point(-1, 0, 0), new Vector(0, 0, 1))),
 	                "Ray orthogonal to ray head -> O line");
 	    }

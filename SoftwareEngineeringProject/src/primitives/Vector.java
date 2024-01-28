@@ -13,9 +13,9 @@ public class Vector extends Point {
 	}
 	/*
 	 * constructor*/
-	public Vector(Double3 d3) {
-		super(d3);
-		if(d3.equals(Double3.ZERO))
+	public Vector(Double3 diff) {
+		super(diff);
+		if(diff.equals(Double3.ZERO))
 				throw new IllegalArgumentException("Vector cannot be the zero vector");
 	}
 	/*
@@ -30,7 +30,7 @@ public class Vector extends Point {
 	/*
 	 * returns the length squared of the Vector*/
 	public double lengthSquared() {
-		return ((this.xyz.d1)*(this.xyz.d1) + (this.xyz.d2)*(this.xyz.d2) + (this.xyz.d3)*(this.xyz.d3));
+		return (((this.xyz.d1)*(this.xyz.d1)) + ((this.xyz.d2)*(this.xyz.d2)) + ((this.xyz.d3)*(this.xyz.d3)));
 	}
 	/*
 	 * returns the length of the Vector*/
@@ -69,14 +69,14 @@ public class Vector extends Point {
 	 * returns a normalized Vector*/
 	public Vector normalize() 
 	{
-		double l = this.length();
-		Vector normalizedVector = 
-				new Vector(
-				this.xyz.d1/l, 
-				this.xyz.d2/l, 
-				this.xyz.d3/l
-				);
-		return normalizedVector;
+		double m=length();
+        this.xyz.d1/=m;
+        this.xyz.d2/=m;
+        this.xyz.d3/=m;
+        return this;
+        //double l = this.length();
+		//Vector normalizedVector = new Vector( this.xyz.d1/l, this.xyz.d2/l, this.xyz.d3/l);
+		//return normalizedVector;
 	}
 	/*
 	 * returns the difference of the two Points*/

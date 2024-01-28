@@ -2,7 +2,7 @@
  * 
  */
 package geometries;
-import primitives.Double3;
+import primitives.Point;
 import primitives.Ray;
 
 import java.util.LinkedList;
@@ -12,7 +12,7 @@ import java.util.List;
  * 
  */
 public class Geometries implements Intersectable{
-	private final List<Intersectable> intersectables = null;
+	private List<Intersectable> intersectables = null;
 
     public Geometries() {
         this.intersectables= new LinkedList<>();
@@ -31,10 +31,10 @@ public class Geometries implements Intersectable{
     }
 
     @Override
-    public List<Double3> findIntersections(Ray ray) {
-        List<Double3> result = null;
+    public List<Point> findIntersections(Ray ray) {
+    	List<Point> result = null;
         for(Intersectable item : this.intersectables){
-            List<Double3>itemPoints = item.findIntersections(ray);
+            List<Point>itemPoints = item.findIntersections(ray);
             if(itemPoints!= null){
                 if(result == null){
                     result = new LinkedList<>();

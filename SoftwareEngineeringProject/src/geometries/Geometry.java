@@ -1,6 +1,4 @@
-package geometries; 
-import java.util.List;
-
+package geometries;
 import primitives.*; 
 
 public interface Geometry extends Intersectable{

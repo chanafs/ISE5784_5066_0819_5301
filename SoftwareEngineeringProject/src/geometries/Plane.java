@@ -3,7 +3,6 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 import java.util.List;
-
 import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
@@ -14,17 +13,19 @@ public class Plane implements Geometry {
 	/*
 	 * constructor*/
 	public Plane(Point q, Vector normal) {
-		super();//needs?
+		super();
 		this.q = q;
 		this.normal = normal;
 	}
 	/*
 	 * constructor*/
 	public Plane(Point a, Point b, Point c) {
-		super();
-		//FOR NOW: 
-		this.q = a; //arbitrary
-		this.normal = null ;
+		 Vector U = b.subtract(a);
+	     Vector V = c.subtract(a);
+	     Vector N = U.crossProduct(V);
+	     N.normalize();
+	     this.normal = N;
+	     this.q = a;
 	}
 	public Vector getNormal() {
 		return this.normal; 
@@ -61,4 +62,3 @@ public class Plane implements Geometry {
     }
 
 	}
-}

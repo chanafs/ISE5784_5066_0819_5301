@@ -1,6 +1,5 @@
 package primitives;
 import java.lang.Math;
-
 public class Point {
 	
 	protected Double3 xyz;
@@ -8,8 +7,8 @@ public class Point {
 	
 	/*
 	 * constructor */
-	protected Point(Double3 d3) {
-		this.xyz = d3;
+	protected Point(Double3 point) {
+		this.xyz = point;
 	}
 	/*
 	 * constructor */
@@ -64,6 +63,6 @@ public class Point {
 	public Double3 getxyz() {
 		return xyz; 
 	}
-
+	
 
 }

@@ -10,13 +10,15 @@ import static primitives.Util.isZero;
  * @author Dan Zilberstein
  */
 public class Double3 {
+	//d1, d2, d3 were final, but we need to access it 
+	
    /** First number */
-   final double                d1;
-   /** Second number */
-   final double                d2;
-   /** Third number */
-   final double                d3;
+   double                d1;
 
+   /** Second number */
+   double                d2;
+   /** Third number */
+    double                d3; 
    /** Zero triad (0,0,0) */
    public static final Double3 ZERO = new Double3(0, 0, 0);
 
@@ -29,12 +31,20 @@ public class Double3 {
     * @param d2 second number value
     * @param d3 third number value
     */
+  public double getD1() {
+	   return d1;  
+   }
+   public double getD2() {
+	   return d2;  
+   }
+   public double getD3() {
+	   return d3;  
+   }
    public Double3(double d1, double d2, double d3) {
       this.d1 = d1;
       this.d2 = d2;
       this.d3 = d3;
    }
-
    /**
     * Constructor to initialize Double3 based object the same number values
     * @param value number value for all 3 numbers
