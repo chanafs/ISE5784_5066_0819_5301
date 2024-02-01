@@ -8,6 +8,7 @@ import static primitives.Util.isZero;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
+import scene.Scene;
 
 /*
  * public class Camera implements Cloneable 
@@ -19,10 +20,12 @@ private Point location;
 private Vector to; 
 private Vector up; 
 private Vector right; 
-
 public double width=1; 
 public double height=1; 
 public double distance=1; 
+
+private ImageWriter imageWriter; 
+private RayTraceBase rayTracer; 
 /*
  * initializing all values to 0 for now 
  * */
@@ -67,6 +70,12 @@ public void setLocation(Point location) {
 public Camera build(){
 	Camera camera = new Camera();
 	return (Camera) camera.clone(); 
+	/*
+	 * In the Builder inside the build method, add a check that both fields has an object, throw an
+appropriate exception if some object is missing. (like stage 4 instruction).
+
+	 * 
+	 * */
         	//assertEquals(0.0, this.c.getWidth(), DELTA, "Width can't be zero");
         	//assertEquals(0.0, this.c.getHeight(), DELTA, "Height can't be zero");
         	//assertEquals(0.0, this.c.getDistance(), DELTA, "Distance can't be zero");		
@@ -101,6 +110,20 @@ if (isZero(Yi)) {
 
 Pij = Pij.add(right.scale(Xj).add(up.scale(Yi)));
 return new Ray(location, Pij.subtract(location));
+}
+
+public RayTraceBase getRayTracer() {
+	return rayTracer;
+}
+public void setRayTracer(RayTraceBase rayTracer) {
+	this.rayTracer = rayTracer;
+}
+
+public ImageWriter getImageWriter() {
+	return imageWriter;
+}
+public void setImageWriter(ImageWriter imageWriter) {
+	this.imageWriter = imageWriter;
 }
 
 /*
@@ -161,5 +184,32 @@ public static class Builder{
     }
 
 }
-
+public void renderImage() {
+    try {
+        if (imageWriter == null) {
+            throw new MissingResourceException("missing resource", ImageWriter.class.getName(), "");
+        }
+        if (Scene.getScene() == null) {
+            throw new MissingResourceException("missing resource", Scene.class.getName(), "");
+        }
+        if (camera == null) {
+            throw new MissingResourceException("missing resource", Camera.class.getName(), "");
+        }
+        if (rayTracerBase == null) {
+            throw new MissingResourceException("missing resource", RayTracerBase.class.getName(), "");
+        }
+//rendering the image
+int nX = imageWriter.getNx();
+int nY = imageWriter.getNy();
+for (int i = 0; i < nY; i++) {
+    for (int j = 0; j < nX; j++) {
+        Ray ray = camera.constructRayThroughPixel(nX, nY, j, i);
+        Color pixelColor = rayTracerBase.traceRay(ray);
+        imageWriter.writePixel(j, i, pixelColor);
+    }
+}
+} catch (MissingResourceException e) {
+throw new UnsupportedOperationException("Not implemented yet" + e.getClassName());
+}
+}
 }

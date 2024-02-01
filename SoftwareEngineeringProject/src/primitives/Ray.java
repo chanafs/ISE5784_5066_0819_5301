@@ -1,5 +1,7 @@
 package primitives;
 
+import java.util.List;
+
 public class Ray {
 	private Point head;
 	private Vector direction;
@@ -20,9 +22,9 @@ public class Ray {
 	}
 	/*
 	 * constructor*/
-	public Ray(Point h, Vector d) {
+	public Ray(Point h, Vector vector) {
 		super(); 
-		Vector vec= d.normalize(); 
+		Vector vec= vector.normalize(); 
 		this.head = h;
 		this.direction = vec;
 	}
@@ -39,4 +41,27 @@ public class Ray {
 	        return this.head.add(direction.scale(t)); 
 
 	    }
+	/**
+     * find the closest Point to Ray origin
+     * @param pointsList intersections point List
+     * @return closest point
+     */
+    public Point findClosestPoint(List<Point> pointsList){
+        Point result =null;
+        double closestDistance = Double.MAX_VALUE;
+
+        if(pointsList== null){
+            return null;
+        }
+
+        for (Point p: pointsList) {
+            double temp = p.distance(head);
+            if(temp < closestDistance){
+                closestDistance =temp;
+                result =p;
+            }
+        }
+
+        return  result;
+    }
 }
