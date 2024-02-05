@@ -2,9 +2,6 @@
  * 
  */
 package renderer;
-
-import java.awt.Color;
-
 import primitives.Ray;
 import scene.Scene;
 
@@ -20,5 +17,5 @@ RayTraceBase(Scene s) {
 /*
  * t receives a ray as a parameter and returns a color
  * */
-public abstract Color traceRay(Ray ray);
+public abstract primitives.Color traceRay(Ray ray);
 }

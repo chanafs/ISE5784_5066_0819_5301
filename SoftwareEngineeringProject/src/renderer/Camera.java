@@ -5,11 +5,14 @@ package renderer;
 //import static org.junit.jupiter.api.Assertions.assertEquals;
 //import static org.junit.jupiter.api.Assertions.assertThrows;
 import static primitives.Util.isZero;
+
+import primitives.Color;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 import scene.Scene;
-
+import java.util.MissingResourceException;
+import scene.*; 
 /*
  * public class Camera implements Cloneable 
  * uses Builder Design Pattern
@@ -69,7 +72,8 @@ public void setLocation(Point location) {
 }
 public Camera build(){
 	Camera camera = new Camera();
-	return (Camera) camera.clone(); 
+    return camera;
+	//return (Camera) camera.clone(); 
 	/*
 	 * In the Builder inside the build method, add a check that both fields has an object, throw an
 appropriate exception if some object is missing. (like stage 4 instruction).
@@ -130,22 +134,22 @@ public void setImageWriter(ImageWriter imageWriter) {
  * Builder class nested in Camera 
  * */
 public static class Builder{
-	private final Camera c; 
+	private final Camera camera; 
 	
 	/*
 	 * creates new camera using the camera object passed
 	 * */
 	public Builder(Camera copy) {
-		this.c=copy; 
+		this.camera=copy; 
 }
 	/*
 	 * default constructor 
 	 * */
 	public Builder() {
-		this.c =new Camera();  
+		this.camera =new Camera();  
 }
 	public Builder setLocation(Point p) {
-		c.location=p; 
+		camera.location=p; 
 		return this; 
 }
 	public Builder setDirection(Vector forward, Vector up) {
@@ -154,62 +158,104 @@ public static class Builder{
         }
 		forward=forward.normalize(); 
 		up=up.normalize(); 
-		this.c.to=forward; 
-		this.c.up=up; 
+		this.camera.to=forward; 
+		this.camera.up=up; 
 		return this; 
 }
 	public Camera setViewPlaneSize(double w, double h) {
-        c.width = w;
-        c.height = h;
-        return this.c;
+        camera.width = w;
+        camera.height = h;
+        return this.camera;
 }
 	public Builder setViewPlaneDistance(double d) {
-        c.distance = d;
+        camera.distance = d;
         return this;
         //distance between camera and the view plane
 	}
 	
 	public void setDistance(double distance) {
-		this.c.distance = distance;
+		this.camera.distance = distance;
 	}
     public void cameraBuilder(Point l, Vector t, Vector u) {
-        c.location = l;
+        camera.location = l;
         if (!isZero(t.dotProduct(u))) {
             throw new IllegalArgumentException("Vectors are not orthogonal");
         }
 
-        c.to = t.normalize();
-        c.up = u.normalize();
-       c.right = c.to.crossProduct(c.up);
+        camera.to = t.normalize();
+        camera.up = u.normalize();
+        camera.right = camera.to.crossProduct(camera.up);
     }
-
+    public Camera getCamera() {
+    	return camera; 
+    }
 }
+/*
+*implement the method renderImage to loop over all the ViewPlane’s pixels. For each pixel it will
+construct a ray using the caseRay method.
+
+**/
 public void renderImage() {
+	Camera camera1=null; 
     try {
         if (imageWriter == null) {
             throw new MissingResourceException("missing resource", ImageWriter.class.getName(), "");
         }
-        if (Scene.getScene() == null) {
-            throw new MissingResourceException("missing resource", Scene.class.getName(), "");
+        if (rayTracer == null) {
+            throw new MissingResourceException("missing resource", RayTraceBase.class.getName(), "");
         }
-        if (camera == null) {
-            throw new MissingResourceException("missing resource", Camera.class.getName(), "");
+
+        //rendering the image
+        int nX = imageWriter.getNx();
+        int nY = imageWriter.getNy();
+        for (int i = 0; i < nY; i++) {
+            for (int j = 0; j < nX; j++) {
+                Ray ray = camera1.constructRay(nX, nY, j, i);
+                Color pixelColor = RayTraceBase.traceRay(ray); //uses rayTracer
+                imageWriter.writePixel(j, i, pixelColor);
+            }
         }
-        if (rayTracerBase == null) {
-            throw new MissingResourceException("missing resource", RayTracerBase.class.getName(), "");
-        }
-//rendering the image
-int nX = imageWriter.getNx();
-int nY = imageWriter.getNy();
-for (int i = 0; i < nY; i++) {
-    for (int j = 0; j < nX; j++) {
-        Ray ray = camera.constructRayThroughPixel(nX, nY, j, i);
-        Color pixelColor = rayTracerBase.traceRay(ray);
-        imageWriter.writePixel(j, i, pixelColor);
+    } catch (MissingResourceException e) {
+        throw new UnsupportedOperationException("Not implemented yet" + e.getClassName());
+ }
     }
+/*
+ * printGrid creates a grid of lines
+ * want to color the pixels where the grid appears in them, leave the other pixels alone
+ * */
+public void printGrid(int interval, Color color) {
+    int nX = imageWriter.getNx();
+    int nY = imageWriter.getNy();
+    for (int i = 0; i < nY; i++) {
+        for (int j = 0; j < nX; j++) {
+            if (i % interval == 0 || j % interval == 0) {
+                imageWriter.writePixel(j, i, color);
+            }
+        }
+    }
+
+} 
+public void writeToImage() {
+    imageWriter.writeToImage();
 }
-} catch (MissingResourceException e) {
-throw new UnsupportedOperationException("Not implemented yet" + e.getClassName());
+
+private void castRay(int Nx, int Ny, int column, int row) {
+	Ray t = constructRay(Nx,Ny,column,row); 
+	Color ofT= this.simpleRayTracer.traceRay(t); //Trace the ray and get it’s color
+	//Color the (column,row) pixel
+	
+	/*
+	 * Add a castRay method that receives the resolution and the pixel number (see lab’s presentation
+for details). Method is void, with private permission.
+o Method will create a ray through the center of pixel using the constructRay method, will
+invoke the traceRay of the ray tracer to calculate the ray’s color and, at the end, will color
+the pixel using writePixel method.
+	 * */
 }
+
+ {
+
+
 }
+
 }
