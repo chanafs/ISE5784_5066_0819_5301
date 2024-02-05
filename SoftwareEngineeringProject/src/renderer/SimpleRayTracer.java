@@ -47,3 +47,15 @@ using the calcColor method (new method).
     }
 }
 
+/*
+ * *
+ * • implement the ray tracing method in the SimpleRayTracer class:
+o method will search intersections between the ray and the scene 3D model
+o if there are no intersections – return the scene’s background
+מיני-פרויקט במבוא להנדסת תוכנה – תשפ"א
+o otherwise, search the closest point to the head of ray and return the color of this point
+using the calcColor metod (new method).
+o A private calcColor method that receives a Point as parameter and returns it’s Color. Add
+jabadoc
+
+ */

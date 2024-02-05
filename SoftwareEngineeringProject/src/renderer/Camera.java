@@ -129,6 +129,19 @@ public ImageWriter getImageWriter() {
 public void setImageWriter(ImageWriter imageWriter) {
 	this.imageWriter = imageWriter;
 }
+private void castRay(int Nx, int Ny, int column, int row) { //IN BUILDER??? 
+	Ray t = constructRay(Nx,Ny,column,row); 
+	Color ofT= rayTracer.traceRay(t); //Trace the ray and get it’s color
+	//Color the (column,row) pixel
+	
+	/*
+	 * Add a castRay method that receives the resolution and the pixel number (see lab’s presentation
+for details). Method is void, with private permission.
+o Method will create a ray through the center of pixel using the constructRay method, will
+invoke the traceRay of the ray tracer to calculate the ray’s color and, at the end, will color
+the pixel using writePixel method.
+	 * */
+}
 
 /*
  * Builder class nested in Camera 
@@ -239,23 +252,5 @@ public void writeToImage() {
     imageWriter.writeToImage();
 }
 
-private void castRay(int Nx, int Ny, int column, int row) {
-	Ray t = constructRay(Nx,Ny,column,row); 
-	Color ofT= this.simpleRayTracer.traceRay(t); //Trace the ray and get it’s color
-	//Color the (column,row) pixel
-	
-	/*
-	 * Add a castRay method that receives the resolution and the pixel number (see lab’s presentation
-for details). Method is void, with private permission.
-o Method will create a ray through the center of pixel using the constructRay method, will
-invoke the traceRay of the ray tracer to calculate the ray’s color and, at the end, will color
-the pixel using writePixel method.
-	 * */
-}
-
- {
-
-
-}
 
 }
