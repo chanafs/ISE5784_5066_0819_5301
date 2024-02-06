@@ -4,6 +4,9 @@ import primitives.Ray;
 import java.util.LinkedList;
 import java.util.List;
 
+/*
+*Geometries represents a collection of intersectable objects.
+*/
 public class Geometries implements Intersectable{
 	private List<Intersectable> intersectables = null;
 	/*
@@ -32,7 +35,7 @@ public class Geometries implements Intersectable{
     }
     /*
 	* constructor
-	* @param ray 
+	* @param ray: find intersection between the given ray and the geometries 
 	*/
     @Override
     public List<Point> findIntersections(Ray ray) {
@@ -51,8 +54,4 @@ public class Geometries implements Intersectable{
         }
         return result;
     }
-	
-	
-	
-	
 }

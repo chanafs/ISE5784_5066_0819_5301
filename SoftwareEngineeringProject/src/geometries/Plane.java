@@ -1,7 +1,6 @@
 package geometries;
-import primitives.Point;
-import primitives.Ray;
-import primitives.Vector;
+
+import primitives.*; 
 import java.util.List;
 import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
@@ -10,8 +9,10 @@ public class Plane implements Geometry {
 
 	private Point q; 
 	private Vector normal; 
+	
 	/*
-	 * constructor*/
+	 * constructor
+	 */
 	public Plane(Point q, Vector normal) {
 		super();
 		this.q = q;
