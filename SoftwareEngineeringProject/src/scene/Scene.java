@@ -12,8 +12,6 @@ import primitives.Color;
 
 public class Scene {
     public String name;
-
-    
     public Color background = Color.BLACK;
     public AmbientLight ambientlight= AmbientLight.NONE; 
     public Geometries geometries = null;
@@ -22,9 +20,6 @@ public class Scene {
         setName(n);
         geometries= new Geometries();
     }
-
-    //chaining set methods (this NOT a builder pattern)
-
     public Scene setBackground(Color background) {
         this.background = background;
         return  this;

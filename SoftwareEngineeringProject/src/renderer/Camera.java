@@ -1,63 +1,49 @@
-/**
- * 
- */
 package renderer;
-//import static org.junit.jupiter.api.Assertions.assertEquals;
-//import static org.junit.jupiter.api.Assertions.assertThrows;
 import static primitives.Util.isZero;
 
 import primitives.Color;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
-import scene.Scene;
 import java.util.MissingResourceException;
-import scene.*; 
-/*
- * public class Camera implements Cloneable 
- * uses Builder Design Pattern
- * */
+
 public class Camera implements Cloneable{
-//private final static double DELTA = 0.000001;
+
 private Point location; 
-private Vector to; 
-private Vector up; 
-private Vector right; 
-public double width=1; 
-public double height=1; 
-public double distance=1; 
+private Vector vTo; // The vector pointing in the direction the camera is facing
+private Vector vUp; // The vector pointing up from the camera's position
+private Vector vRight; // The vector pointing to the right of the camera's position
+
+// Variables for the view plane
+private double width; // The width of the view plane
+private double height; // The height of the view plane
+private double distance; // The distance from the camera to the view plane
 
 private ImageWriter imageWriter; 
 private RayTraceBase rayTracer; 
 
 /*
- * initializing all values to 0 for now 
+ * constructor; sets all values to zero for now  
  * */
 private Camera() {
 	this.location= new Point(0,0,0); 
-	this.to = new Vector(0, 0, 0); 
-	this.up=new Vector(0, 0, 0);
-	this.right=new Vector(0, 0, 0);
+	this.vTo = new Vector(0, 0, 0); 
+	this.vUp=new Vector(0, 0, 0);
+	this.vRight=new Vector(0, 0, 0);
 }
-/*
- * getters for Camera
- * */
 public Point getLocation() {
 	return location;
 }
-public Vector getTo() {
-	return to;
+public Vector getVto() {
+	return vTo;
 }
 
-public Vector getUp() {
-	return up;
+public Vector getVup() {
+	return vUp;
 }
 
-public Vector getRight() {
-	return right;
-}
-public static Builder getBuilder() {
-return new Builder(); 
+public Vector getvRight() {
+	return vRight;
 }
 public double getWidth() {
 	return width;
@@ -71,50 +57,51 @@ public double getDistance() {
 public void setLocation(Point location) {
 	this.location = location;
 }
-public Camera build(){
-	Camera camera = new Camera();
-    return camera;
-	//return (Camera) camera.clone(); 
-	/*
-	 * In the Builder inside the build method, add a check that both fields has an object, throw an
-appropriate exception if some object is missing. (like stage 4 instruction).
-
-	 * 
-	 * */
-        	//assertEquals(0.0, this.c.getWidth(), DELTA, "Width can't be zero");
-        	//assertEquals(0.0, this.c.getHeight(), DELTA, "Height can't be zero");
-        	//assertEquals(0.0, this.c.getDistance(), DELTA, "Distance can't be zero");		
-    }
 /*
- * constructRay maps pixel indicies to points on the image plane and constructs a ray from the camera location to those points
- * parameters i and j - row and column of pixel accordingly
-- Nx represents the number of columns (row width) and Ny represents the number of rows (column height) 
- */
-public Ray constructRay(int nX, int nY, int j, int i){
-Point Pc = location.add(to.scale(distance));
+     Constructs a Ray object representing the ray that would be cast from the camera's position through the specified
+     pixel on the view plane.
+     @param nX the number of columns
+     @param nY the number of rows
+     @param i
+     @param j
+*/
+public Ray constructRay(int nX, int nY, int j, int i) {
+    // Calculate the camera position on the view plane
+    Point Pc = location.add(vTo.scale(distance));
 
-double Rx = width / nX;
-double Ry = height / nY;
+    // Calculate the pixel dimensions on the view plane
+    double Rx = width / nX;
+    double Ry = height / nY;
 
-Point Pij = Pc;
+    // Set the initial point on the view plane to Pc
+    Point Pij = Pc;
 
-double Xj = (j - (nX - 1) / 2d) * Rx;
-double Yi = -(i - (nY - 1) / 2d) * Ry;
+    // Calculate the coordinates of the pixel on the view plane
+    double Xj = (j - (nX - 1) / 2d) * Rx;
+    double Yi = -(i - (nY - 1) / 2d) * Ry;
 
-if (isZero(Xj) && isZero(Yi)) {
+    // Check if the pixel is at the center of the view plane
+    if (isZero(Xj) && isZero(Yi)) {
+        return new Ray(location, Pij.subtract(location));
+    }
+
+    // Check if the pixel is on the horizontal axis of the view plane
+    if (isZero(Xj)) {
+        Pij = Pij.add(vUp.scale(Yi));
+        return new Ray(location, Pij.subtract(location));
+    }
+
+    // Check if the pixel is on the vertical axis of the view plane
+    if (isZero(Yi)) {
+        Pij = Pij.add(vRight.scale(Xj));
+        return new Ray(location, Pij.subtract(location));
+    }
+
+    // Calculate the final point on the view plane for the specified pixel
+    Pij = Pij.add(vRight.scale(Xj).add(vUp.scale(Yi)));
+
+    // Return the constructed ray from the camera's location to the calculated point on the view plane
     return new Ray(location, Pij.subtract(location));
-}
-if (isZero(Xj)) {
-    Pij = Pij.add(up.scale(Yi));
-    return new Ray(location, Pij.subtract(location));
-}
-if (isZero(Yi)) {
-    Pij = Pij.add(right.scale(Xj));
-    return new Ray(location, Pij.subtract(location));
-}
-
-Pij = Pij.add(right.scale(Xj).add(up.scale(Yi)));
-return new Ray(location, Pij.subtract(location));
 }
 
 public RayTraceBase getRayTracer() {
@@ -131,84 +118,38 @@ public void setImageWriter(ImageWriter imageWriter) {
 	this.imageWriter = imageWriter;
 }
 private Color castRay(int nX, int nY, int row, int column) {
-    // construct a ray for each pixel
+    // construct a ray for each pixel though its center 
     Ray ray = this.constructRay(nX, nY, column, row);
     // calculate the color
     Color color = this.rayTracer.traceRay(ray);
     return color;
+}
+/*
 
-	/*
-	 * Add a castRay method that receives the resolution and the pixel number (see lab’s presentation
-for details). Method is void, with private permission.
-o Method will create a ray through the center of pixel using the constructRay method, will
-invoke the traceRay of the ray tracer to calculate the ray’s color and, at the end, will color
-the pixel using writePixel method.
-	 * */
+Sets the size of the camera's view plane.
+@param w: the width of the view plane
+@param h: the height of the view plane
+@return the Camera object with the updated view plane size
+*/
+public Camera setViewPlaneSize(double w, double h) {
+    this.width = w;
+    this.height = h;
+    return this;
+}
+/*
+
+Sets the distance from the camera to the view plane.
+@param d: the distance from the camera to the view plane
+*/
+public Camera setViewPlaneDistance(double d) {
+    distance = d;
+    return this;
+    
 }
 
 /*
- * Builder class nested in Camera 
- * */
-public static class Builder{
-	private final Camera camera; 
-	
-	/*
-	 * creates new camera using the camera object passed
-	 * */
-	public Builder(Camera copy) {
-		this.camera=copy; 
-}
-	/*
-	 * default constructor 
-	 * */
-	public Builder() {
-		this.camera =new Camera();  
-}
-	public Builder setLocation(Point p) {
-		camera.location=p; 
-		return this; 
-}
-	public Builder setDirection(Vector forward, Vector up) {
-		if (!isZero(forward.dotProduct(up))) {
-            throw new IllegalArgumentException("forward and up are not orthogonal");
-        }
-		forward=forward.normalize(); 
-		up=up.normalize(); 
-		this.camera.to=forward; 
-		this.camera.up=up; 
-		return this; 
-}
-	public Camera setViewPlaneSize(double w, double h) {
-        camera.width = w;
-        camera.height = h;
-        return this.camera;
-}
-	public Builder setViewPlaneDistance(double d) {
-        camera.distance = d;
-        return this;
-        //distance between camera and the view plane
-	}
-	
-	public void setDistance(double distance) {
-		this.camera.distance = distance;
-	}
-    public void cameraBuilder(Point l, Vector t, Vector u) {
-        camera.location = l;
-        if (!isZero(t.dotProduct(u))) {
-            throw new IllegalArgumentException("Vectors are not orthogonal");
-        }
-
-        camera.to = t.normalize();
-        camera.up = u.normalize();
-        camera.right = camera.to.crossProduct(camera.up);
-    }
-    public Camera getCamera() {
-    	return camera; 
-    }
-}
-/*
-*implement the method renderImage to loop over all the ViewPlane’s pixels. For each pixel it will
-construct a ray using the caseRay method.
+*implement the method renderImage to loop over all the ViewPlane’s pixels. 
+*For each pixel it will construct a ray using the castRay method.
 
 **/
 public void renderImage() {
@@ -251,9 +192,72 @@ public void printGrid(int interval, Color color) {
     }
 
 } 
-public void writeToImage() {
-    imageWriter.writeToImage();
+public Camera writeToImage() {
+	 if (imageWriter == null) {
+         throw new MissingResourceException("ImageWriter field cannot be null", Camera.class.getName(), "");
+     }
+     // delegates the appropriate method of the ImageWriter.
+     imageWriter.writeToImage();
+     return this;
 }
 
+}; 
 
+/**
+REMOVE BUILDER CLASS PER JOYCE 
+
+public static class Builder{
+	private final Camera camera; 
+	public Builder(Camera copy) {
+		this.camera=copy; 
 }
+	public Builder() {
+		this.camera =new Camera();  
+}
+	public Builder setLocation(Point p) {
+		camera.location=p; 
+		return this; 
+}
+	public Builder setDirection(Vector forward, Vector up) {
+		if (!isZero(forward.dotProduct(up))) {
+            throw new IllegalArgumentException("forward and up are not orthogonal");
+        }
+		forward=forward.normalize(); 
+		up=up.normalize(); 
+		this.camera.to=forward; 
+		this.camera.up=up; 
+		return this; 
+}
+
+	
+	public void setDistance(double distance) {
+		this.camera.distance = distance;
+	}
+    public void cameraBuilder(Point l, Vector t, Vector u) {
+        camera.location = l;
+        if (!isZero(t.dotProduct(u))) {
+            throw new IllegalArgumentException("Vectors are not orthogonal");
+        }
+
+        camera.to = t.normalize();
+        camera.up = u.normalize();
+        camera.right = camera.to.crossProduct(camera.up);
+    }
+    public static Builder getBuilder() {
+return new Builder(); 
+}
+public Camera build(){
+	Camera camera = new Camera();
+    return camera;
+	//return (Camera) camera.clone(); 
+	/*
+	 * In the Builder inside the build method, add a check that both fields has an object, throw an
+appropriate exception if some object is missing. (like stage 4 instruction).
+
+	 * 
+	 * */
+        	//assertEquals(0.0, this.c.getWidth(), DELTA, "Width can't be zero");
+        	//assertEquals(0.0, this.c.getHeight(), DELTA, "Height can't be zero");
+        	//assertEquals(0.0, this.c.getDistance(), DELTA, "Distance can't be zero");		
+    }
+**/

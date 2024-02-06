@@ -1,8 +1,11 @@
 package primitives;
 
 import java.util.List;
-
+import static primitives.Util.isZero;
 public class Ray {
+	/*
+	 * head is the starting point of the ray, direction is the direction vector 
+	 */
 	private Point head;
 	private Vector direction;
 	
@@ -20,31 +23,38 @@ public class Ray {
 	public void setDirection(Vector direction) {
 		this.direction = direction;
 	}
-	/*
-	 * constructor*/
-	public Ray(Point h, Vector vector) {
-		super(); 
-		Vector vec= vector.normalize(); 
-		this.head = h;
-		this.direction = vec;
-	}
 
+    /*
+     * Creates a new Ray with the specified starting point and direction vector.
+     * The direction vector is normalized to have a length of 1.
+     * @param h: The starting point of the ray.
+     * @param v: The direction vector of the ray.
+     */
+	public Ray(Point h, Vector v) {
+		Vector vN= v.normalize(); 
+		this.head = h;
+		this.direction = vN;
+	}
+	/*
+     * Returns a string representation of this ray.
+     */
 	@Override
 	public String toString() {
 		return "Ray []";
 	}
 	/*
 	 * getPoint calculates point on the ray: 𝑷 = 𝑷𝟎 + 𝒕∙𝒗
-	 * */
+	 */
 	public Point getPoint(double t) {
-
+		  if (isZero(t)) {
+	            return head;
+	        }
 	        return this.head.add(direction.scale(t)); 
 
 	    }
-	/**
-     * find the closest Point to Ray origin
-     * @param pointsList intersections point List
-     * @return closest point
+	 /*
+     * Finds the closest point from a list of points.
+     * @param pointsList: The list of points to search.
      */
     public Point findClosestPoint(List<Point> pointsList){
         Point result =null;

@@ -14,48 +14,45 @@ import scene.Scene;
  * 
  */
 public class SimpleRayTracer extends RayTraceBase {
-	/**
-	 * constructor 
-	 * @param scene Scene
-	 */
 	SimpleRayTracer(Scene s) {
 		super(s);
 	}
-    @Override
+	
+
     /*
-     * • implement the ray tracing method in the SimpleRayTracer class:
-o method will search intersections between the ray and the scene 3D model
-o if there are no intersections – return the scene’s background
-מיני-פרויקט במבוא להנדסת תוכנה – תשפ"א
-o otherwise, search the closest point to the head of ray and return the color of this point
-using the calcColor method (new method).
-     * */
+     * Implements the ray tracing method in the SimpleRayTracer class:
+     * Searches for intersections between the given ray and the 3D model in the scene.
+     * If no intersections are found, returns the background color of the scene.
+     * If intersections are found, determines the closest intersection point to the ray's head
+     * and returns the color of this point using the calcColor method.
+     *
+     * @param ray: The ray to trace through the scene.
+     * @return The color determined by the closest intersection point or the scene's background color.
+     */
+    @Override
     public primitives.Color traceRay(Ray ray) {
+        // Find intersections between the ray and the 3D model in the scene
         List<Point> intersections = scene.geometries.findIntersections(ray);
+
+        // If intersections are found
         if (intersections != null) {
+            // Find the closest intersection point to the ray's head
             Point closestPoint = ray.findClosestPoint(intersections);
+            
+            // Calculate and return the color of the closest intersection point
             return calcColor(closestPoint);
         }
-        //ray did not intersect any geometrical object
+
+        // If no intersections are found, return the background color of the scene
         return scene.background;
     }
-/*
- * private calcColor method that receives a Point as parameter and returns it’s Color
- * */
+    /*
+     * Private method to calculate the color of a given point in the scene.
+     *
+     * @param point The 3D point for which to calculate the color.
+     * @return The color of the specified point.
+     */
     private Color calcColor(Point point) {
         return scene.ambientlight.getIntensity();
     }
 }
-
-/*
- * *
- * • implement the ray tracing method in the SimpleRayTracer class:
-o method will search intersections between the ray and the scene 3D model
-o if there are no intersections – return the scene’s background
-מיני-פרויקט במבוא להנדסת תוכנה – תשפ"א
-o otherwise, search the closest point to the head of ray and return the color of this point
-using the calcColor metod (new method).
-o A private calcColor method that receives a Point as parameter and returns it’s Color. Add
-jabadoc
-
- */
