@@ -29,6 +29,7 @@ public double distance=1;
 
 private ImageWriter imageWriter; 
 private RayTraceBase rayTracer; 
+
 /*
  * initializing all values to 0 for now 
  * */
@@ -129,11 +130,13 @@ public ImageWriter getImageWriter() {
 public void setImageWriter(ImageWriter imageWriter) {
 	this.imageWriter = imageWriter;
 }
-private void castRay(int Nx, int Ny, int column, int row) { //IN BUILDER??? 
-	Ray t = constructRay(Nx,Ny,column,row); 
-	Color ofT= rayTracer.traceRay(t); //Trace the ray and get it’s color
-	//Color the (column,row) pixel
-	
+private Color castRay(int nX, int nY, int row, int column) {
+    // construct a ray for each pixel
+    Ray ray = this.constructRay(nX, nY, column, row);
+    // calculate the color
+    Color color = this.rayTracer.traceRay(ray);
+    return color;
+
 	/*
 	 * Add a castRay method that receives the resolution and the pixel number (see lab’s presentation
 for details). Method is void, with private permission.
@@ -223,8 +226,8 @@ public void renderImage() {
         int nY = imageWriter.getNy();
         for (int i = 0; i < nY; i++) {
             for (int j = 0; j < nX; j++) {
-                Ray ray = camera1.constructRay(nX, nY, j, i);
-                Color pixelColor = RayTraceBase.traceRay(ray); //uses rayTracer
+                Ray ray = camera1.constructRay(nX, nY, j, i); //CAMERA1 is NULL???? 
+                Color pixelColor = rayTracer.traceRay(ray); //uses rayTracer
                 imageWriter.writePixel(j, i, pixelColor);
             }
         }
