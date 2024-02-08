@@ -25,11 +25,24 @@ private RayTraceBase rayTracer;
 /*
  * constructor; sets all values to zero for now  
  * */
-private Camera() {
+/**private Camera() {
 	this.location= new Point(0,0,0); 
 	this.vTo = new Vector(0, 0, 0); 
 	this.vUp=new Vector(0, 0, 0);
 	this.vRight=new Vector(0, 0, 0);
+}*/
+
+public Camera(Point p0, Vector v1, Vector v2) {
+    if (!isZero(vTo.dotProduct(vUp))) {
+        throw new IllegalArgumentException("vTo and vUp are not orthogonal");
+    }
+
+    this.location = p0;
+
+    this.vUp = v2.normalize();
+    this.vTo = v1.normalize();
+
+    vRight = this.vTo.crossProduct(this.vUp);
 }
 public Point getLocation() {
 	return location;
@@ -200,6 +213,17 @@ public Camera writeToImage() {
      imageWriter.writeToImage();
      return this;
 }
+private final Camera cameraBuilder(Point l, Vector t, Vector u) {
+    this.location = l;
+    if (!isZero(t.dotProduct(u))) {
+        throw new IllegalArgumentException("Vectors are not orthogonal");
+    }
+
+    this.vTo = t.normalize();
+    this.vUp = u.normalize();
+    this.vRight = this.vTo.crossProduct(this.vUp);
+    return this; 
+}
 
 }; 
 
@@ -259,5 +283,4 @@ appropriate exception if some object is missing. (like stage 4 instruction).
         	//assertEquals(0.0, this.c.getWidth(), DELTA, "Width can't be zero");
         	//assertEquals(0.0, this.c.getHeight(), DELTA, "Height can't be zero");
         	//assertEquals(0.0, this.c.getDistance(), DELTA, "Distance can't be zero");		
-    }
-**/
+   
