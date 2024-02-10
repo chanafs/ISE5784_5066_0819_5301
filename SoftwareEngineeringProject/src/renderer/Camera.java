@@ -33,14 +33,13 @@ private RayTraceBase rayTracer;
 }*/
 
 public Camera(Point p0, Vector v1, Vector v2) {
+    this.location = p0;
+    this.vTo = v1.normalize();
+    this.vUp = v2.normalize();
+
     if (!isZero(vTo.dotProduct(vUp))) {
         throw new IllegalArgumentException("vTo and vUp are not orthogonal");
     }
-
-    this.location = p0;
-
-    this.vUp = v2.normalize();
-    this.vTo = v1.normalize();
 
     vRight = this.vTo.crossProduct(this.vUp);
 }
@@ -120,8 +119,9 @@ public Ray constructRay(int nX, int nY, int j, int i) {
 public RayTraceBase getRayTracer() {
 	return rayTracer;
 }
-public void setRayTracer(RayTraceBase rayTracer) {
-	this.rayTracer = rayTracer;
+public Camera setRayTracer(RayTraceBase r) {
+	this.rayTracer = r;
+	return this; 
 }
 
 public ImageWriter getImageWriter() {
@@ -166,7 +166,7 @@ public Camera setViewPlaneDistance(double d) {
 
 **/
 public void renderImage() {
-	Camera camera1=null; 
+	//Camera camera1=this; 
     try {
         if (imageWriter == null) {
             throw new MissingResourceException("missing resource", ImageWriter.class.getName(), "");
@@ -180,7 +180,7 @@ public void renderImage() {
         int nY = imageWriter.getNy();
         for (int i = 0; i < nY; i++) {
             for (int j = 0; j < nX; j++) {
-                Ray ray = camera1.constructRay(nX, nY, j, i); //CAMERA1 is NULL???? 
+                Ray ray = this.constructRay(nX, nY, j, i); //CAMERA1 is NULL???? 
                 Color pixelColor = rayTracer.traceRay(ray); //uses rayTracer
                 imageWriter.writePixel(j, i, pixelColor);
             }

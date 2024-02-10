@@ -14,8 +14,9 @@ import scene.Scene;
  * 
  */
 public class SimpleRayTracer extends RayTraceBase {
-	SimpleRayTracer(Scene s) {
+	public SimpleRayTracer(Scene s) {
 		super(s);
+		//this.scene=s; 
 	}
 	
 

@@ -14,7 +14,7 @@ public class Scene {
     public String name;
     public Color background = Color.BLACK;
     public AmbientLight ambientlight= AmbientLight.NONE; 
-    public Geometries geometries = null;
+    public Geometries geometries = new Geometries();//null;
 
     public Scene(String n) {
         setName(n);
@@ -38,5 +38,7 @@ public class Scene {
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	public Geometries getGeometries() {
+	return geometries; 
+}
 }
