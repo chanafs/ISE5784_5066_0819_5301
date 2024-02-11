@@ -4,7 +4,7 @@ import java.util.List;
 import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
-public class Plane implements Geometry { 
+public class Plane extends Geometry { 
 
 	private Point pointPlane; 
 	private Vector normal; 
@@ -55,7 +55,7 @@ public class Plane implements Geometry {
     /*
      * Finds the intersections between the plane and a given ray.
      * @param ray: The ray to intersect with the plane.
-     */
+     
     @Override
     public List<Point> findIntersections(Ray ray) {
         Point p0 = ray.getHead();    // Starting point of the ray
@@ -96,5 +96,69 @@ public class Plane implements Geometry {
 
         // Return a list containing the intersection point on the ray
         return List.of(ray.getPoint(t));
-    }
-	}
+    } */
+    /**
+
+    Finds the intersections between the plane and a given ray.
+
+    Overrides the method in the Geometry class.
+
+    @param ray The ray to intersect with the plane.
+
+    @return A list of GeoPoints representing the intersections, or null if there are no intersections.
+    */
+   @Override
+   public List<GeoPoint> findGeoIntersections(Ray ray) {
+       Point P0 = ray.getHead();
+       Vector v = ray.getDirection();
+
+       Vector n = normal;
+
+       if(pointPlane.equals(P0)) {
+           return null;
+       }
+       Vector P0_Q0 = pointPlane.subtract(P0);
+
+       // numerator
+       double nP0Q0 = alignZero(n.dotProduct(P0_Q0));
+
+       if(isZero(nP0Q0)){
+           return null;
+       }
+
+       //denominator
+       double nv = alignZero(n.dotProduct(v));
+
+       // if ray is lying in the plane axis
+       if(isZero(nv)){
+           return null;
+       }
+
+       double t = alignZero(nP0Q0 / nv);
+
+       if (t <= 0){
+           return null;
+       }
+
+       Point point = ray.getPoint(t);
+       GeoPoint geoPoint = new GeoPoint(this, point);
+       return List.of(geoPoint);
+   }
+
+   /**
+
+    Helper method for finding the intersections between the plane and a given ray.
+    Overrides the method in the Geometry class.
+    @param ray The ray to intersect with the plane.
+    @return A list of GeoPoints representing the intersections, or null if there are no intersections.
+    */
+   @Override
+   protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+       List<Point> intersections = this.findIntersections(ray);
+       if (intersections == null) {
+           return null;
+       }
+       Point point = intersections.get(0);
+       return List.of(new GeoPoint(this, point));
+   }
+}

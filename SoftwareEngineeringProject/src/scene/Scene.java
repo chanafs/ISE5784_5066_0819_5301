@@ -41,4 +41,11 @@ public class Scene {
 	public Geometries getGeometries() {
 	return geometries; 
 }
+	public Color getBackground() {
+		return background; 
+	}
+	public AmbientLight getAmbientlight() {
+		return ambientlight; 
+	}
+
 }

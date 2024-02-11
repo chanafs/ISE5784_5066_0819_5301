@@ -13,7 +13,7 @@ import primitives.Vector;
  * system
  * @author Dan
  */
-public class Polygon implements Geometry { 
+public class Polygon extends Geometry { 
    /** List of polygon's vertices */
    protected final List<Point> vertices;
    /** Associated plane in which the polygon lays */
@@ -79,6 +79,7 @@ public class Polygon implements Geometry {
             throw new IllegalArgumentException("All vertices must be ordered and the polygon must be convex");
       }
    }
+   /*
    @Override
    public List<Point> findIntersections(Ray ray) {
        List<Point> result = plane.findIntersections(ray);
@@ -120,6 +121,67 @@ public class Polygon implements Geometry {
        }
 
        return result;
+   }*/
+
+   /**
+
+    * Finds the intersections between the polygon and a given ray.
+    * Overrides the method in the Geometry class.
+    * @param ray The ray to intersect with the polygon.
+    * @return A list of GeoPoints representing the intersections, or null if there are no intersections.
+    */
+   @Override
+   public List<GeoPoint> findGeoIntersections(Ray ray) {
+       // find the intersections points of the plane field of the polygon class
+       List<GeoPoint> result = plane.findGeoIntersections(ray);
+       if (result == null) {
+           return null;
+       }
+       return result;
+   }
+
+   /**
+
+   * Helper method for finding the intersections between the polygon and a given ray.
+   * Overrides the method in the Geometry class.
+   * @param ray The ray to intersect with the polygon.
+   * @return A list of GeoPoints representing the intersections, or null if there are no intersections.
+   */
+   @Override
+   protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+       // run the regular method on the given polygon
+       List<GeoPoint> intersections = this.findGeoIntersections(ray);
+       if (intersections == null) {
+           return null;
+       }
+
+       Point p0 = ray.getHead();
+       Vector direction = ray.getDirection();
+
+       Vector v1 = p0.subtract(vertices.get(1));
+       Vector v2 = p0.subtract(vertices.get(0));
+
+       double check = alignZero(direction.dotProduct(v1.crossProduct(v2)));
+       if (isZero(check)) {
+           return null;
+       }
+
+       for (int i = vertices.size() - 1; i > 0; i--) {
+           v1 = v2;
+           v2 = p0.subtract(vertices.get(i));
+
+           check = alignZero(direction.dotProduct(v1.crossProduct(v2)));
+           if (isZero(check)) {
+               return null;
+           }
+
+           if (!(check > 0)) {
+               return null;
+           }
+       }
+       Point found = intersections.get(0).point;
+
+       return List.of(new GeoPoint(this, found));
    }
    @Override
    public Vector getNormal(Point point) { return plane.getNormal(); }

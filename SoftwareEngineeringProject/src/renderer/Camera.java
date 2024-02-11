@@ -127,8 +127,9 @@ public Camera setRayTracer(RayTraceBase r) {
 public ImageWriter getImageWriter() {
 	return imageWriter;
 }
-public void setImageWriter(ImageWriter imageWriter) {
+public Camera setImageWriter(ImageWriter imageWriter) {
 	this.imageWriter = imageWriter;
+	return this; 
 }
 private Color castRay(int nX, int nY, int row, int column) {
     // construct a ray for each pixel though its center 
@@ -165,7 +166,7 @@ public Camera setViewPlaneDistance(double d) {
 *For each pixel it will construct a ray using the castRay method.
 
 **/
-public void renderImage() {
+public Camera renderImage() {
 	//Camera camera1=this; 
     try {
         if (imageWriter == null) {
@@ -188,6 +189,7 @@ public void renderImage() {
     } catch (MissingResourceException e) {
         throw new UnsupportedOperationException("Not implemented yet" + e.getClassName());
  }
+    return this; 
     }
 /*
  * printGrid creates a grid of lines
