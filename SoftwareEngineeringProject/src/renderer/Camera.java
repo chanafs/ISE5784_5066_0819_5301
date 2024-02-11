@@ -25,12 +25,12 @@ private RayTraceBase rayTracer;
 /*
  * constructor; sets all values to zero for now  
  * */
-/**private Camera() {
+public Camera() {
 	this.location= new Point(0,0,0); 
 	this.vTo = new Vector(0, 0, 0); 
 	this.vUp=new Vector(0, 0, 0);
 	this.vRight=new Vector(0, 0, 0);
-}*/
+}
 
 public Camera(Point p0, Vector v1, Vector v2) {
     this.location = p0;
@@ -66,8 +66,9 @@ public double getHeight() {
 public double getDistance() {
 	return distance;
 }
-public void setLocation(Point location) {
+public Camera setLocation(Point location) {
 	this.location = location;
+	return this;
 }
 /*
      Constructs a Ray object representing the ray that would be cast from the camera's position through the specified
@@ -195,7 +196,7 @@ public Camera renderImage() {
  * printGrid creates a grid of lines
  * want to color the pixels where the grid appears in them, leave the other pixels alone
  * */
-public void printGrid(int interval, Color color) {
+public Camera printGrid(int interval, Color color) {
     int nX = imageWriter.getNx();
     int nY = imageWriter.getNy();
     for (int i = 0; i < nY; i++) {
@@ -205,6 +206,7 @@ public void printGrid(int interval, Color color) {
             }
         }
     }
+    return this;
 
 } 
 public Camera writeToImage() {
@@ -226,6 +228,7 @@ private final Camera cameraBuilder(Point l, Vector t, Vector u) {
     this.vRight = this.vTo.crossProduct(this.vUp);
     return this; 
 }
+
 
 }; 
    

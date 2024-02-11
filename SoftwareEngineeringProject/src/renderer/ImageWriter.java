@@ -19,9 +19,9 @@ import primitives.Color;
  * @author Dan */
 public class ImageWriter {
    /** Horizontal resolution of the image - number of pixels in row */
-   private int                 nX;
+   private double                 nX;
    /** Vertical resolution of the image - number of pixels in column */
-   private int                 nY;
+   private double                 nY;
 
    /** Directory path for the image file generation - relative to the user
     * directory */

@@ -20,15 +20,19 @@ public class LightsTest {
    /** Second scene for some of tests */
    private final Scene          scene2                  = new Scene("Test scene")
       .setAmbientLight(new AmbientLight(new Color(WHITE), new Double3(0.15)));
-
+   
    /** First camera builder for some of tests */
-   private final Camera.Builder camera1                 = Camera.getBuilder()
-      .setRayTracer(new SimpleRayTracer(scene1))
-      .setLocation(new Point(0, 0, 1000))
-      .setDirection(Point.ZERO, Vector.Y)
-      .setVpSize(150, 150).setVpDistance(1000);
+   private Camera camera1 = new Camera();
+   {
+   camera1.setRayTracer(new SimpleRayTracer(scene1));
+   camera1.setLocation(new Point(0, 0, 1000));
+   camera1.setViewPlaneSize(150.0, 150.0);
+   camera1.setViewPlaneDistance(1000);
+   }
+   
+   
    /** Second camera builder for some of tests */
-   private final Camera.Builder camera2                 = Camera.getBuilder()
+   private final Camera camera2                 = new Camera()
       .setRayTracer(new SimpleRayTracer(scene2))
       .setLocation(new Point(0, 0, 1000))
       .setDirection(Point.ZERO, Vector.Y)
@@ -82,7 +86,7 @@ public class LightsTest {
    private final Vector         trianglesLightDirection = new Vector(-2, -2, -2);
 
    /** The sphere in appropriate tests */
-   private final Geometry       sphere                  = new Sphere(sphereCenter, SPHERE_RADIUS)
+   private final Geometry       sphere                  = new Sphere(SPHERE_RADIUS, sphereCenter)
       .setEmission(sphereColor).setMaterial(new Material().setKd(KD).setKs(KS).setShininess(SHININESS));
    /** The first triangle in appropriate tests */
    private final Geometry       triangle1               = new Triangle(vertices[0], vertices[1], vertices[2])
@@ -111,7 +115,6 @@ public class LightsTest {
          .setKl(0.001).setKq(0.0002));
 
       camera1.setImageWriter(new ImageWriter("lightSpherePoint", 500, 500))
-         .build()
          .renderImage()
          .writeToImage();
    }
@@ -124,7 +127,6 @@ public class LightsTest {
          .setKl(0.001).setKq(0.0001));
 
       camera1.setImageWriter(new ImageWriter("lightSphereSpot", 500, 500))
-         .build()
          .renderImage()
          .writeToImage();
    }
@@ -133,10 +135,9 @@ public class LightsTest {
    @Test
    public void trianglesDirectional() {
       scene2.geometries.add(triangle1, triangle2);
-      scene2.lights.add(new DirectionalLight(trianglesLightColor, trianglesLightDirection));
+      scene2.lights.add(new DirectionalLight(trianglesLightColor));
 
       camera2.setImageWriter(new ImageWriter("lightTrianglesDirectional", 500, 500)) //
-         .build()
          .renderImage()
          .writeToImage();
    }
@@ -149,7 +150,6 @@ public class LightsTest {
          .setKl(0.001).setKq(0.0002));
 
       camera2.setImageWriter(new ImageWriter("lightTrianglesPoint", 500, 500)) //
-         .build() //
          .renderImage() //
          .writeToImage(); //
    }
@@ -162,7 +162,6 @@ public class LightsTest {
          .setKl(0.001).setKq(0.0001));
 
       camera2.setImageWriter(new ImageWriter("lightTrianglesSpot", 500, 500))
-         .build()
          .renderImage()
          .writeToImage();
    }
@@ -176,7 +175,6 @@ public class LightsTest {
             .setKl(0.001).setKq(0.00004).setNarrowBeam(10));
 
       camera1.setImageWriter(new ImageWriter("lightSphereSpotSharp", 500, 500))
-         .build()
          .renderImage()
          .writeToImage();
    }
@@ -189,7 +187,6 @@ public class LightsTest {
          .setKl(0.001).setKq(0.00004).setNarrowBeam(10));
 
       camera2.setImageWriter(new ImageWriter("lightTrianglesSpotSharp", 500, 500))
-         .build()
          .renderImage()
          .writeToImage();
    }

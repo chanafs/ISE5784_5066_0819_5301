@@ -12,7 +12,7 @@ public abstract class Light {
      * The intensity of the light, represented as a Color.
      * This attribute can affect how bright the light appears and its color tint.
      */
-    protected final Color intensity;
+    protected Color intensity;
 
     /**
      * Protected constructor for initializing the Light object with a specified intensity.

@@ -13,6 +13,7 @@ public class Vector extends Point {
      * @param z the z component of the vector
      * @throws IllegalArgumentException if the vector's components are all zero
      */
+	
 	public Vector(double x, double y, double z) {
 		super(new Double3(x, y, z));
 		if(this.xyz.equals(Double3.ZERO))

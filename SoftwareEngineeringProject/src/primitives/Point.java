@@ -4,7 +4,7 @@ public class Point {
 	/*
     xyz is a variable of type Double3 which contains three coordinates for the point
      */
-	protected Double3 xyz;
+	public Double3 xyz;
 	public static final Point ZERO = new Point(0, 0, 0);
 	
 	/*

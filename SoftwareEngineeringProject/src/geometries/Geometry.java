@@ -3,7 +3,7 @@ import primitives.*;
 
 public abstract class Geometry extends Intersectable{
 	public abstract Vector getNormal(Point p); 
-	 protected Color emission= Color.BLACK; 
+	 public Color emission= Color.BLACK; 
 	 private Material material = new Material();
 	 
 	/*
