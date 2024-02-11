@@ -13,9 +13,7 @@ import scene.Scene;
 /** Test rendering a basic image
  * @author Dan */
 public class RenderTests {
-   /** Scene of the tests */
- // private final Scene scene  = new Scene("Test scene");
-	
+
    /** Produce a scene with basic 3D model and render it into a png image with a
     * grid */
 	
@@ -42,20 +40,6 @@ public void RenderTwoColorTest() {
     camera.writeToImage();
 }
 
-  /* Test for XML based scene - for bonus 
-   @Test
-   public void basicRenderXml() {
-      // enter XML file name and parse from XML file into scene object
-      // using the code you added in appropriate packages
-      // ...
-      // NB: unit tests is not the correct place to put XML parsing code
-
-      camera
-         .setImageWriter(new ImageWriter("xml render test", 1000, 1000))
-         .build()
-         .renderImage()
-         .printGrid(100, new Color(YELLOW))
-         .writeToImage();
-   } **/
+ 
 }
 
