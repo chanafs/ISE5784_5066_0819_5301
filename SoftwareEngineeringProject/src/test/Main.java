@@ -17,7 +17,7 @@ import primitives.*;
  * @author Dan Zilberstein
  */
 
-public final class Main {
+public final class finite Main {
 
    /**
     * Main program to tests initial functionality of the 1st stage
