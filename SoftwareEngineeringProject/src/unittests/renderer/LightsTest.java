@@ -1,14 +1,16 @@
 package unittests.renderer;
 
-import static java.awt.Color.*;
 
 import org.junit.jupiter.api.Test;
 
 import geometries.*;
-import lighting.*;
 import primitives.*;
 import renderer.*;
 import scene.Scene;
+
+import static java.awt.Color.*;
+
+import lighting.*;
 
 /**
  * Test rendering a basic image
@@ -29,14 +31,15 @@ public class LightsTest {
    camera1.setViewPlaneSize(150.0, 150.0);
    camera1.setViewPlaneDistance(1000);
    }
-   
-   
+    Vector zero= new Vector (0,0,0);
+    Vector y =   new Vector (0,1,0);
+    
    /** Second camera builder for some of tests */
    private final Camera camera2                 = new Camera()
       .setRayTracer(new SimpleRayTracer(scene2))
       .setLocation(new Point(0, 0, 1000))
-      .setDirection(Point.ZERO, Vector.Y)
-      .setVpSize(200, 200).setVpDistance(1000);
+      .setDirection(zero, y)// we don't have Y so we changed it , we're sending vector notpoint
+      .setViewPlaneSize(200, 200).setViewPlaneDistance(1000);
 
    /** Shininess value for most of the geometries in the tests */
    private static final int     SHININESS               = 301;
@@ -102,10 +105,11 @@ public class LightsTest {
       scene1.lights.add(new DirectionalLight(sphereLightColor, sphereLightDirection));
 
       camera1.setImageWriter(new ImageWriter("lightSphereDirectional", 500, 500))
-         .build()
-         .renderImage()
-         .writeToImage();
-   }
+      .renderImage()
+      .writeToImage();
+}
+ 
+      
 
    /** Produce a picture of a sphere lighted by a point light */
    @Test

@@ -70,6 +70,8 @@ public Camera setLocation(Point location) {
 	this.location = location;
 	return this;
 }
+
+
 /*
      Constructs a Ray object representing the ray that would be cast from the camera's position through the specified
      pixel on the view plane.
@@ -161,6 +163,14 @@ public Camera setViewPlaneDistance(double d) {
     return this;
     
 }
+public Camera setDirection(Vector a, Vector b) {
+	this.vTo = a.normalize();
+    this.vUp = b.normalize();
+
+    if (!isZero(vTo.dotProduct(vUp))) {
+        throw new IllegalArgumentException("vTo and vUp are not orthogonal");
+    }
+
 
 /*
 *implement the method renderImage to loop over all the ViewPlane’s pixels. 

@@ -14,7 +14,8 @@ import static primitives.Util.isZero;
  */
 public class SpotLight extends PointLight {
 
-    private final Vector direction;
+    private  Vector direction;
+    private double angle;
 
     /**
      * Constructs a SpotLight with specified intensity, position, and direction.
@@ -79,8 +80,8 @@ public class SpotLight extends PointLight {
      * @param direction the direction vector of the spotlight
      * @return the SpotLight object, enabling method chaining
      */
-    public SpotLight setDirection(Vector direction) {
-        this.direction = direction;
+    public SpotLight setDirection(Vector d) {
+        this.direction = d;
         return this;
     }
     
@@ -102,6 +103,12 @@ public class SpotLight extends PointLight {
        //Color iL = super.getIntensity(p);
        return iO.scale(max);
    }
+
+
+    public SpotLight setNarrowBeam(double n) {
+       this.angle = n;
+       return this;
+   }
 }
-}
+
 

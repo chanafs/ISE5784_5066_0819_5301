@@ -4,12 +4,14 @@ import primitives.Point;
 import primitives.Ray;
 import java.util.LinkedList;
 import java.util.List;
-
+import primitives.Material;
 /*
 *Geometries represents a collection of intersectable objects.
 */
+
 public class Geometries extends Intersectable{
 	private List<Intersectable> intersectables = null;
+	
 	/*
 	* constructor 
 	*/

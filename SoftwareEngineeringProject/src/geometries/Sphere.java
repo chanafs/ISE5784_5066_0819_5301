@@ -105,3 +105,5 @@ public class Sphere extends RadialGeometry{
        }
        return List.of(new GeoPoint(this, point));
    }
+}
+   

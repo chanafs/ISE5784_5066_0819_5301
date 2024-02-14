@@ -23,14 +23,25 @@ public class DirectionalLight extends Light implements LightSource {
 
     Constructs a new DirectionalLight with the specified color and direction.
     @param color The color of the light.
-    @param direction The direction of the light.
     */
 	public DirectionalLight(Color intensity) {
 		super(intensity);
 		// TODO Auto-generated constructor stub
 	}
+	/**
 
-    /**
+    Constructs a new DirectionalLight with the specified color and direction.
+    @param color The color of the light.
+    @param direction The direction of the light.
+    */
+    public DirectionalLight(Color sphereLightColor, Vector sphereLightDirection) {
+    
+    	super(sphereLightColor) ;
+        direction= sphereLightDirection;
+		
+	}
+
+	/**
 
     Gets the intensity of the directional light at the specified point.
     @param p The point at which to calculate the intensity.

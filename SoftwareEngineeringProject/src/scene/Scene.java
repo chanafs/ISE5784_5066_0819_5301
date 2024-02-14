@@ -4,9 +4,12 @@
 package scene;
 
 /**
+
  * 
  */
 import lighting.AmbientLight;
+
+
 import lighting.LightSource;
 import geometries.Geometries;
 import primitives.Color;
@@ -80,7 +83,7 @@ public class Scene {
 		return background; 
 	}
 	public AmbientLight getAmbientlight() {
-		return ambientlight; 
+		return this.ambientlight; 
 	}
 
 }
