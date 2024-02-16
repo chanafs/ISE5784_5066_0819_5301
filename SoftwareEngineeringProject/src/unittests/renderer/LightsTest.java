@@ -18,28 +18,24 @@ import lighting.*;
  */
 public class LightsTest {
    /** First scene for some of tests */
-   private final Scene          scene1                  = new Scene("Test scene");
-   /** Second scene for some of tests */
-   private final Scene          scene2                  = new Scene("Test scene")
+   private final Scene scene1 = new Scene("Test scene");
+   private final Scene scene2 = new Scene("Test scene")
       .setAmbientLight(new AmbientLight(new Color(WHITE), new Double3(0.15)));
    
    /** First camera builder for some of tests */
-   private Camera camera1 = new Camera();
-   {
-   camera1.setRayTracer(new SimpleRayTracer(scene1));
-   camera1.setLocation(new Point(0, 0, 1000));
-   camera1.setViewPlaneSize(150.0, 150.0);
-   camera1.setViewPlaneDistance(1000);
-   }
-    Vector zero= new Vector (0,0,0);
-    Vector y =   new Vector (0,1,0);
-    
-   /** Second camera builder for some of tests */
-   private final Camera camera2                 = new Camera()
-      .setRayTracer(new SimpleRayTracer(scene2))
-      .setLocation(new Point(0, 0, 1000))
-      .setDirection(zero, y)// we don't have Y so we changed it , we're sending vector notpoint
-      .setViewPlaneSize(200, 200).setViewPlaneDistance(1000);
+   
+   private Camera camera1 = new Camera(new Point(0, 0, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
+           .setViewPlaneSize(150, 150)
+           .setViewPlaneDistance(1000)
+           .setRayTracer(new SimpleRayTracer(scene1))
+           .setLocation(new Point(0, 0, 1000));
+   
+   /** second camera builder for some of tests */
+   private Camera camera2 = new Camera(new Point(0, 0, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
+           .setViewPlaneSize(200, 200) //
+           .setViewPlaneDistance(1000)
+           .setRayTracer(new SimpleRayTracer(scene2))
+           .setLocation(new Point(0, 0, 1000));
 
    /** Shininess value for most of the geometries in the tests */
    private static final int     SHININESS               = 301;
@@ -79,6 +75,7 @@ public class LightsTest {
         // the left-top
         new Point(-75, 78, 100)
       };
+   
    /** Position of the light in tests with sphere */
    private final Point          sphereLightPosition     = new Point(-50, -50, 25);
    /** Light direction (directional and spot) in tests with sphere */
@@ -89,15 +86,14 @@ public class LightsTest {
    private final Vector         trianglesLightDirection = new Vector(-2, -2, -2);
 
    /** The sphere in appropriate tests */
-   private final Geometry       sphere                  = new Sphere(SPHERE_RADIUS, sphereCenter)
-      .setEmission(sphereColor).setMaterial(new Material().setKd(KD).setKs(KS).setShininess(SHININESS));
-   /** The first triangle in appropriate tests */
-   private final Geometry       triangle1               = new Triangle(vertices[0], vertices[1], vertices[2])
-      .setMaterial(material);
-   /** The first triangle in appropriate tests */
-   private final Geometry       triangle2               = new Triangle(vertices[0], vertices[1], vertices[3])
-      .setMaterial(material);
-
+   private final Geometry sphere = new Sphere(SPHERE_RADIUS, sphereCenter)
+		   .setEmission(sphereColor)
+		   .setMaterial(new Material()
+			.setKd(KD).setKs(KS)
+			.setShininess(SHININESS));
+   private final Geometry triangle1 = new Triangle(vertices[0], vertices[1], vertices[2]).setMaterial(material);
+   private final Geometry triangle2 = new Triangle(vertices[0], vertices[1], vertices[3]).setMaterial(material);
+  
    /** Produce a picture of a sphere lighted by a directional light */
    @Test
    public void sphereDirectional() {
@@ -108,7 +104,6 @@ public class LightsTest {
       .renderImage()
       .writeToImage();
 }
- 
       
 
    /** Produce a picture of a sphere lighted by a point light */
@@ -138,12 +133,14 @@ public class LightsTest {
    /** Produce a picture of two triangles lighted by a directional light */
    @Test
    public void trianglesDirectional() {
-      scene2.geometries.add(triangle1, triangle2);
-      scene2.lights.add(new DirectionalLight(trianglesLightColor));
+	   scene2.getGeometries().add(triangle1, triangle2);
+	      scene2.getLights().add(new DirectionalLight(trianglesLightColor, trianglesLightDirection));
 
-      camera2.setImageWriter(new ImageWriter("lightTrianglesDirectional", 500, 500)) //
-         .renderImage()
-         .writeToImage();
+	      ImageWriter imageWriter = new ImageWriter("lightTrianglesDirectional", 500, 500);
+	      camera2.setImageWriter(imageWriter) //
+	              .setRayTracer(new SimpleRayTracer(scene2)) //
+	              .renderImage() //
+	              .writeToImage(); //
    }
 
    /** Produce a picture of two triangles lighted by a point light */
@@ -194,5 +191,9 @@ public class LightsTest {
          .renderImage()
          .writeToImage();
    }
+   
+   
 
 }
+
+   

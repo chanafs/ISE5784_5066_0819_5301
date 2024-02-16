@@ -25,12 +25,6 @@ private RayTraceBase rayTracer;
 /*
  * constructor; sets all values to zero for now  
  * */
-public Camera() {
-	this.location= new Point(0,0,0); 
-	this.vTo = new Vector(0, 0, 0); 
-	this.vUp=new Vector(0, 0, 0);
-	this.vRight=new Vector(0, 0, 0);
-}
 
 public Camera(Point p0, Vector v1, Vector v2) {
     this.location = p0;
@@ -170,6 +164,8 @@ public Camera setDirection(Vector a, Vector b) {
     if (!isZero(vTo.dotProduct(vUp))) {
         throw new IllegalArgumentException("vTo and vUp are not orthogonal");
     }
+    return this;
+}
 
 
 /*
@@ -188,13 +184,22 @@ public Camera renderImage() {
         }
 
         //rendering the image
-        int nX = imageWriter.getNx();
-        int nY = imageWriter.getNy();
+        double nX = imageWriter.getNx();
+        double nY = imageWriter.getNy();
+        /*
         for (int i = 0; i < nY; i++) {
             for (int j = 0; j < nX; j++) {
-                Ray ray = this.constructRay(nX, nY, j, i); //CAMERA1 is NULL???? 
+                Ray ray = this.constructRay((int)nX, (int)nY, j, i); //CAMERA1 is NULL???? 
                 Color pixelColor = rayTracer.traceRay(ray); //uses rayTracer
                 imageWriter.writePixel(j, i, pixelColor);
+            }
+        }
+        */
+        for (int row = 0; row < nY; row++) {
+            for (int column = 0; column < nX; column++) {
+                Color color = castRay((int)nX, (int)nY, row, column);
+                // store the color in the corresponding pixel
+                this.imageWriter.writePixel(column, row, color);
             }
         }
     } catch (MissingResourceException e) {
@@ -202,13 +207,14 @@ public Camera renderImage() {
  }
     return this; 
     }
+
 /*
  * printGrid creates a grid of lines
  * want to color the pixels where the grid appears in them, leave the other pixels alone
  * */
 public Camera printGrid(int interval, Color color) {
-    int nX = imageWriter.getNx();
-    int nY = imageWriter.getNy();
+    double nX = imageWriter.getNx();
+    double nY = imageWriter.getNy();
     for (int i = 0; i < nY; i++) {
         for (int j = 0; j < nX; j++) {
             if (i % interval == 0 || j % interval == 0) {

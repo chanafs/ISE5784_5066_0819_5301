@@ -1,6 +1,7 @@
 package renderer;
 
 import primitives.*;
+import java.util.List;
 import primitives.Double3;
 import primitives.Ray;
 import scene.Scene;
@@ -9,24 +10,24 @@ import lighting.LightSource;
 
 public class SimpleRayTracer extends RayTraceBase {
     public SimpleRayTracer(Scene s) {
-        super(s);
-      
-
+        super(s); 
     }
     
     @Override
     public Color traceRay(Ray ray) {
+
         var intersections = scene.geometries.findGeoIntersections(ray);
         return intersections == null
             ? scene.background
             : calcColor(ray.findClosestGeoPoint(intersections));
     }
+    
     private Color calcColor(GeoPoint gp) {
         return gp == null
             ? scene.background
             : scene.ambientlight.getIntensity().add(gp.geometry.getEmission());
-
     }
+    
     /**
      * Calculates the color of the point using the ambient
      * light intensity of the scene
@@ -37,6 +38,7 @@ public class SimpleRayTracer extends RayTraceBase {
     public Color calcColor(Point p) {
         return scene.ambientlight.getIntensity();
     }
+    
     public Color calcColor(GeoPoint gp, Ray ray) {
         //gp.geometry.getIntensity(gp.point);
         return scene.ambientlight.getIntensity().add(calcLocalEffects(gp, ray));
@@ -57,7 +59,7 @@ public class SimpleRayTracer extends RayTraceBase {
         Double3 kd = gp.geometry.getMaterial().kD;
         Double3 ks = gp.geometry.getMaterial().kS;
 
-        Color color = new Color(0,0,0);
+        Color color = new Color(0, 0, 0);
         for (LightSource lightSource : scene.lights) {
             Vector l = lightSource.getL(gp.point);
             double nl = Util.alignZero(n.dotProduct(l));

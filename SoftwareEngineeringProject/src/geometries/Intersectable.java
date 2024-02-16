@@ -7,6 +7,7 @@ import java.util.List;
 */
 public abstract class Intersectable {
 	
+	
 	  /**
      * Finds the intersection points between the specified ray and this object.
      *

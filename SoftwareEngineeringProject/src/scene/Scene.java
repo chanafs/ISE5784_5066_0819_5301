@@ -85,5 +85,9 @@ public class Scene {
 	public AmbientLight getAmbientlight() {
 		return this.ambientlight; 
 	}
+	
+	public List<LightSource> getLights() {
+        return lights;
+    }
 
 }

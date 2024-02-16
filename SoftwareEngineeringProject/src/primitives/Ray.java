@@ -32,6 +32,7 @@ public class Ray {
      * @param h: The starting point of the ray.
      * @param v: The direction vector of the ray.
      */
+	
 	public Ray(Point h, Vector v) {
 		Vector vN= v.normalize(); 
 		this.head = h;

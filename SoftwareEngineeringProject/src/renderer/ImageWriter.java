@@ -50,11 +50,11 @@ public class ImageWriter {
    // ***************** Getters/Setters ********************** //
    /** View Plane Y axis resolution
     * @return the amount of vertical pixels */
-   public int getNy() { return nY; }
+   public double getNy() { return nY; }
 
    /** View Plane X axis resolution
     * @return the amount of horizontal pixels */
-   public int getNx() { return nX; }
+   public double getNx() { return nX; }
 
    // ***************** Operations ******************** //
 
