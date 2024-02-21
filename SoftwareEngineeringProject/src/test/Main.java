@@ -12,6 +12,8 @@ import static primitives.Util.isZero;
 
 import primitives.*;
 
+
+testing push 21/2 12:53
 /**
  * Test program for the 1st stage
  * @author Dan Zilberstein
