@@ -44,6 +44,8 @@ public class Sphere extends RadialGeometry{
 
     @return A list of GeoPoints representing the intersections, or null if there are no intersections.
     */
+	
+	//didnt update this help fn!!!!!
    @Override
    public List<GeoPoint> findGeoIntersections(Ray ray) {
        Point P0 = ray.getHead();
@@ -91,6 +93,8 @@ public class Sphere extends RadialGeometry{
     @param ray The ray to intersect with the sphere.
     @return A list of GeoPoints representing the intersections, or null if there are no intersections.
     */
+   
+   
    @Override
    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
        List<Point> intersections = this.findIntersections(ray);
@@ -105,5 +109,38 @@ public class Sphere extends RadialGeometry{
        }
        return List.of(new GeoPoint(this, point));
    }
+   /*
+   @Override
+	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+		Point p0 = ray.getHead();
+		Vector dir = ray.getDirection();
+		// Deals with case where ray starts from the center of the sphere
+		if (p0.equals(center))
+			return List.of(new GeoPoint(this, ray.getPoint(this.radius)));
+		// Finding the hypotenuse, base and perpendicular of the triangle formed by
+		// ray's starting point, the center of the sphere and the intersection point of
+		// the ray and the perpendicular line crosing the sphere's center.
+		Vector hypotenuse = this.center.subtract(p0);
+		double base = dir.dotProduct(hypotenuse);
+		double perpendicular = hypotenuse.lengthSquared() - base * base;
+		double insideSquared = this.radiusSquared - perpendicular;
+
+		// Dealing with a case in which the ray is perpendicular to the sphere at the
+		// intersection point, or passes outside the Sphere.
+		if (alignZero(insideSquared) <= 0)
+			return null;
+
+		// Returning intersection points, ensuring that only those intersected by the
+		// ray are returned.
+		double inside = Math.sqrt(insideSquared);
+		double t2 = base + inside;
+
+		if (alignZero(t2) <= 0)
+			return null;
+		double t1 = base - inside;
+		if (alignZero(t1) > 0)
+			return List.of(new GeoPoint(this, ray.getPoint(t1)), new GeoPoint(this, ray.getPoint(t2)));
+		return List.of(new GeoPoint(this, ray.getPoint(t2)));
+	}*/
 }
    

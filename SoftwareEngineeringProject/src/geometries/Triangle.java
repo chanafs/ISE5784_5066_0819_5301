@@ -27,13 +27,10 @@ public class Triangle extends Polygon{
     */
    @Override
    public List<GeoPoint> findGeoIntersections(Ray ray) {
-       if (this.plane.findGeoIntersections(ray) == null) {
-           return null;
-       }
-
-       Point p0 = ray.getHead();
+	   Point p0 = ray.getHead();
        Vector v = ray.getDirection();
-
+       
+     
        // get the vertices of the triangle
        Point p1 = vertices.get(0);
        Point p2 = vertices.get(1);
@@ -63,22 +60,19 @@ public class Triangle extends Polygon{
            // if there is no intersection, return null
            return null;
    }
-
    /**
-
-    Helper method for finding the intersections between the triangle and a given ray.
-    Overrides the method in the Geometry class.
-    @param ray The ray to intersect with the triangle.
-    @return A list of GeoPoints representing the intersections, or null if there are no intersections.
-    */
-   @Override
-   protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-       List<Point> intersections = this.findIntersections(ray);
-       if (intersections == null) {
-           return null;
-       }
-       Point point = intersections.get(0);
-       return List.of(new GeoPoint(this, point));
-   }
-
+   Helper method for finding the intersections between the triangle and a given ray.
+   Overrides the method in the Geometry class.
+   @param ray The ray to intersect with the triangle.
+   @return A list of GeoPoints representing the intersections, or null if there are no intersections.
+   */
+  @Override
+public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+      List<Point> intersections = this.findIntersections(ray);
+      if (intersections == null) {
+          return null;
+      }
+      Point point = intersections.get(0);
+      return List.of(new GeoPoint(this, point));
+  }
 }

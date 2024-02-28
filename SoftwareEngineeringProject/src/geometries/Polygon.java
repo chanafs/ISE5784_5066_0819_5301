@@ -1,5 +1,6 @@
 package geometries;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static primitives.Util.isZero;
@@ -104,6 +105,9 @@ public class Polygon extends Geometry {
    * @param ray The ray to intersect with the polygon.
    * @return A list of GeoPoints representing the intersections, or null if there are no intersections.
    */
+   
+   
+   /*
    @Override
    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
        // run the regular method on the given polygon
@@ -139,7 +143,37 @@ public class Polygon extends Geometry {
        Point found = intersections.get(0).point;
 
        return List.of(new GeoPoint(this, found));
-   }
+   }*/
+   //UPDATED FOR PHASE 6 
+	@Override
+	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+		var points = this.plane.findGeoIntersections(ray);
+		// Only check point if the ray intersects the plane of the polygon.
+		if (points == null)
+			return null;
+		Point p0 = ray.getHead();
+		Vector v = ray.getDirection();
+		List<Vector> vectors = new LinkedList<>();
+		// Construct vectors to the vertices
+		for (Point p : this.vertices) {
+			vectors.add(p.subtract(p0));
+		}
+		int vSize = vectors.size();
+		// Cross product each adjacent pair of vectors and check they all share the same
+		// sign
+		double normal = alignZero(vectors.get(vSize - 1).crossProduct(vectors.get(0)).dotProduct(v));
+		if (isZero(normal))
+			return null;
+		boolean sign = normal > 0;
+		for (int i = 0; i < vSize - 1; i++) {
+			normal = alignZero(vectors.get(i).crossProduct(vectors.get(i + 1)).dotProduct(v));
+			if ((normal > 0) ^ sign || isZero(normal))
+				return null;
+		}
+		points.get(0).geometry = this;
+		return points;
+	}
+   
    @Override
    public Vector getNormal(Point point) { return plane.getNormal(); }
 

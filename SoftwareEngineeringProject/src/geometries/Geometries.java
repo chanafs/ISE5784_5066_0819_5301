@@ -10,7 +10,7 @@ import primitives.Material;
 */
 
 public class Geometries extends Intersectable{
-	private List<Intersectable> intersectables = null;
+	private List<Intersectable> intersectables = new LinkedList<>();
 	
 	/*
 	* constructor 
@@ -23,7 +23,7 @@ public class Geometries extends Intersectable{
 	* @param intersectables: array of Intersectable objects to be added to intersectables list 
 	*/
     public Geometries(Intersectable... intersectables) {
-        this.intersectables = new LinkedList<>(); 
+        //this.intersectables = new LinkedList<>(); 
         add(intersectables);
     }
     /*
@@ -96,14 +96,19 @@ public class Geometries extends Intersectable{
     */
    @Override
    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-       List<GeoPoint> intersections = null;
+	   List<GeoPoint> result = null;
+       //List<GeoPoint> intersections = null;
        for(Intersectable intersectable : intersectables) {
-           List<GeoPoint> geometryIntersections = intersectable.findGeoIntersections(ray);
-           if (!geometryIntersections.isEmpty())
-               for (GeoPoint geo : geometryIntersections) {
-                   intersections.add(geo);
-               }
+    	   var toAdd =intersectable.findGeoIntersections(ray);
+    	   if (toAdd != null) {
+    		   if (result == null)
+					result = new LinkedList<>();
+    		   result.addAll(toAdd);
+    	   }
        }
-       return intersections;
-   }
+          // List<GeoPoint> geometryIntersections = intersectable.findGeoIntersections(ray);
+          return result; 
 }
+   
+} 
+   
