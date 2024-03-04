@@ -72,8 +72,7 @@ public class SimpleRayTracer extends RayTraceBase {
         int nShininess = gp.geometry.getMaterial().nShininess;
         Double3 kd = gp.geometry.getMaterial().kD;
         Double3 ks = gp.geometry.getMaterial().kS;
-
-        Color color = new Color(BLACK);
+        Color color = new Color(BLACK).add(gp.geometry.getEmission());//new Color(BLACK);
         for (LightSource lightSource : scene.lights) {
             Vector l = lightSource.getL(gp.point);
             double nl = Util.alignZero(n.dotProduct(l));

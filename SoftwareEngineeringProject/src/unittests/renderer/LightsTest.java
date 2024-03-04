@@ -117,7 +117,6 @@ public class LightsTest {
          .renderImage()
          .writeToImage();
    }
-
    /** Produce a picture of a sphere lighted by a spotlight */
    @Test
    public void sphereSpot() {
@@ -168,7 +167,7 @@ public class LightsTest {
    }
 
    /** Produce a picture of a sphere lighted by a narrow spotlight */
-   /*@Test
+   @Test
    public void sphereSpotSharp() {
       scene1.geometries.add(sphere);
       scene1.lights
@@ -179,9 +178,9 @@ public class LightsTest {
       camera1.setImageWriter(new ImageWriter("lightSphereSpotSharp", 500, 500))
          .renderImage()
          .writeToImage();
-   }*/
+   }
 
-  /* 
+  
    @Test
    public void trianglesSpotSharp() {
       scene2.geometries.add(triangle1, triangle2);
@@ -192,10 +191,8 @@ public class LightsTest {
       camera2.setImageWriter(new ImageWriter("lightTrianglesSpotSharp", 500, 500))
          .renderImage()
          .writeToImage();
-   }*/
+   }
    
    
 
 }
-
-   
