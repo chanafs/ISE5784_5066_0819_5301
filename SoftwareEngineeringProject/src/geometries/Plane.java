@@ -98,10 +98,7 @@ public class Plane extends Geometry {
        Point point = ray.getPoint(t);
        GeoPoint geoPoint = new GeoPoint(this, point);
        return List.of(geoPoint);
-       /*
-        * 
-        * return (alignZero(t) <= 0) ? null : List.of(new GeoPoint(this, ray.getPoint(t)));
-        * */
+
    }
 
    /**
@@ -113,12 +110,6 @@ public class Plane extends Geometry {
     */
    @Override
    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-      /* List<Point> intersections = this.findIntersections(ray);
-       if (intersections == null) {
-           return null;
-       }
-       Point point = intersections.get(0);
-       return List.of(new GeoPoint(this, point));*/
 	   Point p0 = ray.getHead();
 	   Vector v = ray.getDirection();
 	   if (pointPlane.equals(p0))

@@ -1,13 +1,7 @@
 package geometries;
-import primitives.Color;
-import primitives.Point;
 import primitives.Ray;
 import java.util.LinkedList;
 import java.util.List;
-import primitives.Material;
-/*
-*Geometries represents a collection of intersectable objects.
-*/
 
 public class Geometries extends Intersectable{
 	private List<Intersectable> intersectables = new LinkedList<>();
@@ -37,31 +31,7 @@ public class Geometries extends Intersectable{
         }
     }
     
-    
-    
     /*
-	* constructor
-	* @param ray: find intersection between the given ray and the geometries 
-	
-    @Override
-    public List<Point> findIntersections(Ray ray) {
-    	//stores the intersection Points in result 
-    	List<Point> result = null;
-        for(Intersectable item : this.intersectables){
-            List<Point>itemPoints = item.findIntersections(ray);
-            //if there are intersections with the current Intersectable object
-            if(itemPoints!= null){
-                if(result == null){
-                    result = new LinkedList<>();
-                }
-                //add intersections to result 
-                result.addAll(itemPoints);
-            }
-        }
-        return result;
-    } */
-    /**
-
     Finds the intersections between the Geometries and a given ray.
     Overrides the method in the Geometry class.
     @param ray The ray to intersect with the Geometries.
@@ -88,7 +58,6 @@ public class Geometries extends Intersectable{
    }
 
    /**
-
     Helper method for finding the intersections between the geometries bodies in the scene and a given ray.
     Overrides the method in the Geometry class.
     @param ray The ray to intersect with the geometric bodies in the scene.
@@ -106,9 +75,8 @@ public class Geometries extends Intersectable{
     		   result.addAll(toAdd);
     	   }
        }
-          // List<GeoPoint> geometryIntersections = intersectable.findGeoIntersections(ray);
           return result; 
-}
+      }
    
 } 
    

@@ -12,25 +12,7 @@ import primitives.Vector;
 public class SpotLight extends PointLight implements LightSource {
 
     private  Vector direction;
-    private double angle =1; //remove =1?? 
-
-    /** OURS OLD 
-     * Constructs a SpotLight with specified intensity, position, and direction.
-     * This constructor initializes a spotlight with all the required properties.
-     *
-     * @param intensity the color intensity of the light
-     * @param position  the position of the light source in the scene
-     * @param direction the direction vector of the spotlight
-     
-    public SpotLight(Color intensity, Point position, Vector direction) {
-        super(intensity, position);
-        this.direction = direction;
-    }
-*/
-    
-    
-    
-    
+    private double angle =1;
     /**
 	 * Creates a spot light.
 	 * 
@@ -78,18 +60,6 @@ public class SpotLight extends PointLight implements LightSource {
    public Color getIntensity(Point p) {
 	   return super.getIntensity(p).
 			   scale(Math.pow(Math.max(0, direction.dotProduct(super.getL(p))), angle));
-	   /*
-       Color iO = super.getIntensity(p);
-
-       double dotProd = alignZero(direction.dotProduct(getL(p)));
-       if (isZero(dotProd)) {
-           return Color.BLACK;
-       }
-
-       double max = Math.max(dotProd, 0);
-       //Color iL = super.getIntensity(p);
-       return iO.scale(max);*/
-	   
    }
     public SpotLight setNarrowBeam(double n) {
        this.angle = n;
@@ -98,49 +68,4 @@ public class SpotLight extends PointLight implements LightSource {
     
 }
 
-
-/*   /**
-     * Sets the constant attenuation coefficient and returns the SpotLight object itself,
-     * allowing for method chaining. This method overrides the parent's setKc method
-     * to maintain the fluent interface pattern specific to SpotLight.
-     *
-     * @param kC the constant attenuation coefficient
-     * @return the SpotLight object
-     
-    @Override
-    public SpotLight setKc(double kC) {
-        super.setKc(kC);
-        return this;
-    }
-
-    /**
-     * Sets the linear attenuation coefficient and returns the SpotLight object itself,
-     * allowing for method chaining. This method overrides the parent's setKl method
-     * to maintain the fluent interface pattern specific to SpotLight.
-     *
-     * @param kL the linear attenuation coefficient
-     * @return the SpotLight object
-     
-    @Override
-    public SpotLight setKl(double kL) {
-        super.setKl(kL);
-        return this;
-    }
-
-    /**
-     * Sets the quadratic attenuation coefficient and returns the SpotLight object itself,
-     * allowing for method chaining. This method overrides the parent's setKq method
-     * to maintain the fluent interface pattern specific to SpotLight.
-     *
-     * @param kQ the quadratic attenuation coefficient
-     * @return the SpotLight object
-     
-    @Override
-    public SpotLight setKq(double kQ) {
-        super.setKq(kQ);
-        return this;
-    }
-
- *
- * */
 

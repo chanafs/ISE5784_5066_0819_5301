@@ -48,26 +48,12 @@ public class Polygon extends Geometry {
          throw new IllegalArgumentException("A polygon can't have less than 3 vertices");
       this.vertices = List.of(vertices);
       size          = vertices.length;
-
-      // Generate the plane according to the first three vertices and associate the
-      // polygon with this plane.
-      // The plane holds the invariant normal (orthogonal unit) vector to the polygon
       plane         = new Plane(vertices[0], vertices[1], vertices[2]);
       if (size == 3) return; // no need for more tests for a Triangle
 
       Vector  n        = plane.getNormal();
-      // Subtracting any subsequent points will throw an IllegalArgumentException
-      // because of Zero Vector if they are in the same point
       Vector  edge1    = vertices[vertices.length - 1].subtract(vertices[vertices.length - 2]);
       Vector  edge2    = vertices[0].subtract(vertices[vertices.length - 1]);
-
-      // Cross Product of any subsequent edges will throw an IllegalArgumentException
-      // because of Zero Vector if they connect three vertices that lay in the same
-      // line.
-      // Generate the direction of the polygon according to the angle between last and
-      // first edge being less than 180 deg. It is hold by the sign of its dot product
-      // with the normal. If all the rest consequent edges will generate the same sign
-      // - the polygon is convex ("kamur" in Hebrew).
       boolean positive = edge1.crossProduct(edge2).dotProduct(n) > 0;
       for (var i = 1; i < vertices.length; ++i) {
          // Test that the point is in the same plane as calculated originally
@@ -82,7 +68,6 @@ public class Polygon extends Geometry {
    }
 
    /**
-
     * Finds the intersections between the polygon and a given ray.
     * Overrides the method in the Geometry class.
     * @param ray The ray to intersect with the polygon.
@@ -99,52 +84,11 @@ public class Polygon extends Geometry {
    }
 
    /**
-
    * Helper method for finding the intersections between the polygon and a given ray.
    * Overrides the method in the Geometry class.
    * @param ray The ray to intersect with the polygon.
    * @return A list of GeoPoints representing the intersections, or null if there are no intersections.
    */
-   
-   
-   /*
-   @Override
-   protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-       // run the regular method on the given polygon
-       List<GeoPoint> intersections = this.findGeoIntersections(ray);
-       if (intersections == null) {
-           return null;
-       }
-
-       Point p0 = ray.getHead();
-       Vector direction = ray.getDirection();
-
-       Vector v1 = p0.subtract(vertices.get(1));
-       Vector v2 = p0.subtract(vertices.get(0));
-
-       double check = alignZero(direction.dotProduct(v1.crossProduct(v2)));
-       if (isZero(check)) {
-           return null;
-       }
-
-       for (int i = vertices.size() - 1; i > 0; i--) {
-           v1 = v2;
-           v2 = p0.subtract(vertices.get(i));
-
-           check = alignZero(direction.dotProduct(v1.crossProduct(v2)));
-           if (isZero(check)) {
-               return null;
-           }
-
-           if (!(check > 0)) {
-               return null;
-           }
-       }
-       Point found = intersections.get(0).point;
-
-       return List.of(new GeoPoint(this, found));
-   }*/
-   //UPDATED FOR PHASE 6 
 	@Override
 	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
 		var points = this.plane.findGeoIntersections(ray);

@@ -44,8 +44,7 @@ public class Sphere extends RadialGeometry{
 
     @return A list of GeoPoints representing the intersections, or null if there are no intersections.
     */
-	
-	//didnt update this help fn!!!!!
+
    @Override
    public List<GeoPoint> findGeoIntersections(Ray ray) {
        Point P0 = ray.getHead();
@@ -60,8 +59,6 @@ public class Sphere extends RadialGeometry{
 
        double tm = alignZero(v.dotProduct(U));
        double d = alignZero(Math.sqrt(U.lengthSquared() - tm * tm));
-
-       // no intersections : the ray direction is above the sphere
        if (d >= radius) {
            return null;
        }
@@ -93,7 +90,6 @@ public class Sphere extends RadialGeometry{
     @param ray The ray to intersect with the sphere.
     @return A list of GeoPoints representing the intersections, or null if there are no intersections.
     */
-   
    
  @Override
    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {

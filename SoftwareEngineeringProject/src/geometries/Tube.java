@@ -28,11 +28,7 @@ public class Tube extends RadialGeometry{
         double t = axis.getDirection().dotProduct(p.subtract(axis.getHead()));
         Point o = axis.getHead().add(axis.getDirection().scale(t));
         return p.subtract(o).normalize();
-    }
-	/*@Override
-	public List<Point> findIntersections(Ray ray) {
-		return null;
-	}*/
+	}
 	@Override
     public List<GeoPoint> findGeoIntersections(Ray ray) {
         return null;

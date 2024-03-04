@@ -28,10 +28,7 @@ public abstract class Intersectable {
       * @param ray The ray to find intersections with.
       * @return A list of GeoPoint objects representing the intersection points.
       */
-     public abstract List<GeoPoint> findGeoIntersections(Ray ray); //{
-         //return findGeoIntersectionsHelper(ray);
-   //  }
-
+     public abstract List<GeoPoint> findGeoIntersections(Ray ray); 
      /**
       * Protected abstract method for subclasses to implement, finding intersections with GeoPoints.
       * Subclasses should provide their specific implementation of intersection logic.
@@ -69,9 +66,6 @@ public abstract class Intersectable {
     	    @Override
     	    public boolean equals(Object obj) {
     	        if (this == obj) return true;
-    	        /*if (obj == null || getClass() != obj.getClass()) return false;
-    	        GeoPoint other = (GeoPoint) obj;
-    	        return geometry.equals(other.geometry) && point.equals(other.point);*/
     	        return obj instanceof GeoPoint other && (this.geometry == other.geometry) && (this.point.equals(other.point));
     	    }
     	    
